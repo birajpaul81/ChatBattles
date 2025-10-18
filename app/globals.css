@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+
+@layer base {
+  body {
+    @apply bg-background text-text antialiased;
+  }
+}
+
+@layer utilities {
+  .glow-orange {
+    box-shadow: 0 0 20px rgba(253, 99, 22, 0.5), 0 0 40px rgba(253, 99, 22, 0.3);
+  }
+  
+  .glow-orange-strong {
+    box-shadow: 0 0 30px rgba(253, 99, 22, 0.8), 0 0 60px rgba(253, 99, 22, 0.5);
+  }
+
+  .gradient-orange {
+    background: linear-gradient(135deg, #FD6316 0%, #FF4500 100%);
+  }
+
+  .gradient-bg {
+    background: linear-gradient(135deg, #0D0D0D 0%, #1a0a00 50%, #0D0D0D 100%);
+  }
+
+  .border-glow {
+    border: 1px solid rgba(253, 99, 22, 0.5);
+    box-shadow: 0 0 10px rgba(253, 99, 22, 0.3);
+  }
+}
+

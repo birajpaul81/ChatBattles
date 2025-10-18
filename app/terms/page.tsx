@@ -31,7 +31,7 @@ export default function TermsPage() {
                   1. Acceptance of Terms
                 </h2>
                 <p className="leading-relaxed">
-                  By accessing and using ChatBattles.ai ("the Service"), you
+                  By accessing and using ChatBattles.ai (&quot;the Service&quot;), you
                   accept and agree to be bound by the terms and provision of
                   this agreement. If you do not agree to these terms, please do
                   not use the Service.
@@ -150,7 +150,7 @@ export default function TermsPage() {
                   9. Disclaimer of Warranties
                 </h2>
                 <p className="leading-relaxed">
-                  THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND,
+                  THE SERVICE IS PROVIDED &quot;AS IS&quot; WITHOUT WARRANTIES OF ANY KIND,
                   EXPRESS OR IMPLIED. We do not guarantee the accuracy,
                   reliability, or completeness of AI-generated responses. Users
                   should verify important information independently.
@@ -188,7 +188,7 @@ export default function TermsPage() {
                 <p className="leading-relaxed">
                   We may update these Terms of Service from time to time. We will
                   notify users of any material changes by posting the new terms
-                  on this page and updating the "Last updated" date.
+                  on this page and updating the &quot;Last updated&quot; date.
                 </p>
               </section>
 

@@ -31,7 +31,7 @@ export default function PrivacyPage() {
                   1. Introduction
                 </h2>
                 <p className="leading-relaxed">
-                  ChatBattles.ai ("we," "our," or "us") is committed to
+                  ChatBattles.ai (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to
                   protecting your privacy. This Privacy Policy explains how we
                   collect, use, disclose, and safeguard your information when you
                   use our Service.
@@ -155,7 +155,7 @@ export default function PrivacyPage() {
                     </h3>
                     <p className="leading-relaxed">
                       Processes your prompts through AI models. Your prompts may be
-                      subject to A4F's data policies.
+                      subject to A4F&apos;s data policies.
                       <br />
                       Website:{" "}
                       <a
@@ -254,7 +254,7 @@ export default function PrivacyPage() {
 
               <section>
                 <h2 className="text-2xl font-orbitron font-bold text-white mb-4">
-                  8. Children's Privacy
+                  8. Children&apos;s Privacy
                 </h2>
                 <p className="leading-relaxed">
                   ChatBattles.ai is not intended for users under 13 years of age.
@@ -282,7 +282,7 @@ export default function PrivacyPage() {
                 <p className="leading-relaxed">
                   We may update this Privacy Policy from time to time. We will
                   notify you of any changes by posting the new policy on this page
-                  and updating the "Last updated" date.
+                  and updating the &quot;Last updated&quot; date.
                 </p>
               </section>
 

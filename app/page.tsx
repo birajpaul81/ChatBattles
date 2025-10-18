@@ -85,6 +85,67 @@ export default function HomePage() {
                 delay={0.2}
               />
             </motion.div>
+
+            {/* How It Works Section */}
+            <motion.div
+              className="mt-32 mb-20"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.2 }}
+            >
+              <h2 className="text-4xl md:text-5xl font-orbitron font-black text-white mb-4">
+                How It Works
+              </h2>
+              <p className="text-softGray text-lg mb-12 max-w-2xl mx-auto">
+                Get the best AI insights in 3 simple steps
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <StepCard
+                  number="1"
+                  icon="✍️"
+                  title="Ask Your Question"
+                  description="Type any question, problem, or prompt you want to explore"
+                  delay={0}
+                />
+                <StepCard
+                  number="2"
+                  icon="⚡"
+                  title="AI Models Battle"
+                  description="Your prompt is simultaneously sent to GPT-5-Nano, Grok-4, and DeepSeek v3.1"
+                  delay={0.1}
+                />
+                <StepCard
+                  number="3"
+                  icon="🎯"
+                  title="Compare & Choose"
+                  description="View all three responses side-by-side and pick the best answer for your needs"
+                  delay={0.2}
+                />
+              </div>
+
+              <motion.div
+                className="mt-16 bg-gradient-to-r from-accent/10 to-red-600/10 border border-accent/30 rounded-2xl p-8 max-w-3xl mx-auto"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 1.5 }}
+              >
+                <h3 className="text-2xl font-orbitron font-bold text-white mb-4">
+                  🤖 Why Multiple AI Models?
+                </h3>
+                <div className="text-left text-softGray space-y-3">
+                  <p>
+                    <span className="text-white font-semibold">Different strengths:</span> Each AI model excels at different tasks—coding, creative writing, analysis, or conversation.
+                  </p>
+                  <p>
+                    <span className="text-white font-semibold">Better accuracy:</span> Comparing multiple responses helps you identify the most reliable and comprehensive answer.
+                  </p>
+                  <p>
+                    <span className="text-white font-semibold">Unique perspectives:</span> Get diverse viewpoints and approaches to solve your problems more effectively.
+                  </p>
+                </div>
+              </motion.div>
+            </motion.div>
           </motion.div>
         </div>
       </main>
@@ -117,6 +178,38 @@ function FeatureCard({
         {title}
       </h3>
       <p className="text-softGray">{description}</p>
+    </motion.div>
+  );
+}
+
+function StepCard({
+  number,
+  icon,
+  title,
+  description,
+  delay,
+}: {
+  number: string;
+  icon: string;
+  title: string;
+  description: string;
+  delay: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 1.2 + delay }}
+      className="bg-black/50 backdrop-blur-sm border-2 border-accent/30 rounded-2xl p-8 hover:border-accent hover:glow-orange transition-all duration-300 relative"
+    >
+      <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 w-12 h-12 bg-gradient-to-br from-accent to-red-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg">
+        {number}
+      </div>
+      <div className="text-5xl mb-4 mt-6 text-center">{icon}</div>
+      <h3 className="text-xl font-orbitron font-bold text-white mb-3 text-center">
+        {title}
+      </h3>
+      <p className="text-softGray text-center leading-relaxed">{description}</p>
     </motion.div>
   );
 }

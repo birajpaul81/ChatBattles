@@ -3,25 +3,35 @@ import AnimatedBackground from "@/components/AnimatedBackground";
 
 export default function SignInPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <AnimatedBackground />
-      <div className="relative z-10">
+      <div className="relative z-10 w-full max-w-md">
         <SignIn
           appearance={{
             elements: {
-              rootBox: "mx-auto",
-              card: "bg-black/80 backdrop-blur-xl border border-accent/30 shadow-2xl",
-              headerTitle: "text-white font-orbitron",
-              headerSubtitle: "text-softGray",
+              rootBox: "mx-auto w-full",
+              card: "bg-gradient-to-b from-black/95 to-black/90 backdrop-blur-xl border-2 border-accent/50 shadow-[0_0_50px_rgba(253,99,22,0.3)] rounded-2xl p-8",
+              headerTitle: "text-white font-orbitron text-2xl font-bold",
+              headerSubtitle: "text-softGray text-base",
               socialButtonsBlockButton:
-                "bg-black/50 border border-accent/30 hover:border-accent/50 text-white",
-              formButtonPrimary: "gradient-orange glow-orange hover:scale-105",
-              footerActionLink: "text-accent hover:text-accent/80",
+                "bg-white/10 border-2 border-white/20 hover:border-accent/50 text-white font-semibold rounded-xl hover:bg-white/20 transition-all",
+              socialButtonsBlockButtonText: "text-white font-medium",
+              formButtonPrimary: "gradient-orange glow-orange hover:scale-105 text-white font-bold rounded-xl py-3 transition-all",
+              footerActionLink: "text-accent hover:text-accent/80 font-semibold",
               formFieldInput:
-                "bg-black/50 border-accent/30 text-white focus:border-accent",
-              formFieldLabel: "text-softGray",
+                "bg-white/10 border-2 border-white/20 text-white placeholder:text-gray-400 focus:border-accent focus:ring-2 focus:ring-accent/20 rounded-xl py-3 px-4",
+              formFieldLabel: "text-white font-semibold mb-2",
+              formFieldInputShowPasswordButton: "text-accent hover:text-accent/80",
               identityPreviewText: "text-white",
-              identityPreviewEditButton: "text-accent",
+              identityPreviewEditButton: "text-accent hover:text-accent/80",
+              dividerLine: "bg-white/20",
+              dividerText: "text-softGray",
+              footerActionText: "text-softGray",
+              formFieldSuccessText: "text-green-400",
+              formFieldErrorText: "text-red-400",
+              formFieldWarningText: "text-yellow-400",
+              footerPages: "bg-black/50 border border-accent/30 rounded-xl",
+              otpCodeFieldInput: "bg-white/10 border-2 border-white/20 text-white focus:border-accent rounded-lg",
             },
           }}
         />

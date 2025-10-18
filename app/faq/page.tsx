@@ -186,7 +186,7 @@ export default function FAQPage() {
                 Still have questions?
               </h2>
               <p className="text-softGray mb-6">
-                Can't find the answer you're looking for? We're here to help!
+                Can&apos;t find the answer you&apos;re looking for? We&apos;re here to help!
               </p>
               <a
                 href="/chat"

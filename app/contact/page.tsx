@@ -56,7 +56,7 @@ export default function ContactPage() {
               Get in Touch
             </h1>
             <p className="text-softGray text-lg mb-12 text-center max-w-2xl mx-auto">
-              Have questions, feedback, or feature requests? We'd love to hear
+              Have questions, feedback, or feature requests? We&apos;d love to hear
               from you!
             </p>
 
@@ -79,7 +79,7 @@ export default function ContactPage() {
                     className="mb-6 bg-green-500/10 border border-green-500/50 rounded-xl p-4"
                   >
                     <p className="text-green-400 font-semibold">
-                      ✅ Message sent successfully! We'll get back to you soon.
+                      ✅ Message sent successfully! We&apos;ll get back to you soon.
                     </p>
                   </motion.div>
                 )}

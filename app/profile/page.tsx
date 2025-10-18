@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useUser } from "@clerk/nextjs";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AnimatedBackground from "@/components/AnimatedBackground";
@@ -77,9 +78,11 @@ export default function ProfilePage() {
             </h1>
             <div className="bg-black/50 backdrop-blur-sm border border-accent/30 rounded-xl p-6">
               <div className="flex items-center gap-4">
-                <img
-                  src={user?.imageUrl}
+                <Image
+                  src={user?.imageUrl || "/default-avatar.png"}
                   alt={user?.fullName || "User"}
+                  width={64}
+                  height={64}
                   className="w-16 h-16 rounded-full border-2 border-accent"
                 />
                 <div>

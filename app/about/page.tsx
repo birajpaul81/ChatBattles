@@ -38,7 +38,7 @@ export default function AboutPage() {
                 </p>
                 <p className="text-lg leading-relaxed">
                   ChatBattles.ai was born from the belief that comparing AI
-                  responses shouldn't be complicated. We make it simple,
+                  responses shouldn&apos;t be complicated. We make it simple,
                   visual, and free for everyone to see multiple AI perspectives
                   side-by-side in real-time.
                 </p>
@@ -98,7 +98,7 @@ export default function AboutPage() {
                       GPT-5-Nano
                     </h3>
                     <p className="leading-relaxed">
-                      OpenAI's latest nano model, optimized for speed and
+                      OpenAI&apos;s latest nano model, optimized for speed and
                       efficiency without compromising on intelligence. Perfect
                       for quick, accurate responses.
                     </p>
@@ -108,7 +108,7 @@ export default function AboutPage() {
                       Grok-4
                     </h3>
                     <p className="leading-relaxed">
-                      X.ai's conversational powerhouse with a unique personality.
+                      X.ai&apos;s conversational powerhouse with a unique personality.
                       Known for its wit, real-world knowledge, and engaging
                       responses.
                     </p>
@@ -137,7 +137,7 @@ export default function AboutPage() {
                     time-consuming and frustrating.
                   </p>
                   <p>
-                    We thought: <span className="text-white font-semibold italic">"There has to be a better way."</span>
+                    We thought: <span className="text-white font-semibold italic">&quot;There has to be a better way.&quot;</span>
                   </p>
                   <p>
                     So we built ChatBattles.ai—a platform that brings multiple AI
@@ -179,7 +179,7 @@ export default function AboutPage() {
                       Innovation
                     </h3>
                     <p className="text-sm">
-                      We're constantly evolving, adding new models and features
+                      We&apos;re constantly evolving, adding new models and features
                       based on your feedback
                     </p>
                   </div>
@@ -207,10 +207,10 @@ export default function AboutPage() {
               <section>
                 <h2 className="text-3xl font-orbitron font-bold text-white mb-6 flex items-center gap-3">
                   <span className="text-4xl">🔮</span>
-                  What's Next?
+                  What&apos;s Next?
                 </h2>
                 <p className="text-lg leading-relaxed mb-6">
-                  We're just getting started! Here's what's on our roadmap:
+                  We&apos;re just getting started! Here&apos;s what&apos;s on our roadmap:
                 </p>
                 <ul className="space-y-3 ml-6">
                   <li className="flex items-start gap-3">

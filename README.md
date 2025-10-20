@@ -49,6 +49,7 @@ A production-ready AI chat platform where users can compare responses from multi
    # Supabase Configuration
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 
    # Clerk Configuration
    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
@@ -111,9 +112,17 @@ The application uses these models:
 ### Supabase
 
 1. Create a project at [https://supabase.com](https://supabase.com)
-2. Get your project URL and anon key
-3. Run the schema SQL in the SQL Editor
-4. Add credentials to your `.env.local` file
+2. Get your project URL and keys:
+   - Go to Project Settings > API
+   - Copy the **Project URL** → `NEXT_PUBLIC_SUPABASE_URL`
+   - Copy the **anon/public key** → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - Copy the **service_role key** → `SUPABASE_SERVICE_ROLE_KEY` (⚠️ Keep this secret!)
+3. Run the schema SQL in the SQL Editor:
+   - Go to SQL Editor in Supabase dashboard
+   - Run the SQL from `supabase/schema.sql`
+4. Add all credentials to your `.env.local` file
+
+**Note**: This app uses Clerk for authentication (not Supabase Auth). The service role key bypasses Row Level Security (RLS) in API routes while Clerk handles user authentication.
 
 ## 📂 Project Structure
 
@@ -222,6 +231,13 @@ Made with ⚡ by ChatBattles.ai
 **Database errors**
 - Verify Supabase schema is created
 - Check your Supabase credentials
+- Ensure `SUPABASE_SERVICE_ROLE_KEY` is set in `.env.local`
+
+**Chat history not showing in profile**
+- Make sure you've added the `SUPABASE_SERVICE_ROLE_KEY` to your `.env.local`
+- Verify the `chats` table exists in Supabase (run `supabase/schema.sql`)
+- Restart your development server after adding environment variables
+- Check browser console and server logs for specific error messages
 
 ## 📞 Support
 

@@ -26,11 +26,17 @@ export default function ProfilePage() {
       const response = await fetch("/api/chats");
       const data = await response.json();
 
+      console.log("Fetch chats response:", data);
+
       if (data.success) {
-        setChats(data.data);
+        setChats(data.data || []);
+      } else {
+        console.error("Failed to fetch chats:", data.error);
+        setChats([]);
       }
     } catch (error) {
       console.error("Error fetching chats:", error);
+      setChats([]);
     } finally {
       setIsLoading(false);
     }

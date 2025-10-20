@@ -20,6 +20,7 @@ export default function ChatPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [battleResults, setBattleResults] = useState<BattleResult[]>([]);
   const [prompt, setPrompt] = useState("");
+  const [conversationHistory, setConversationHistory] = useState<Array<{role: string; content: string}>>([]);
 
   const handleSubmit = async (userPrompt: string) => {
     setIsLoading(true);
@@ -27,11 +28,14 @@ export default function ChatPage() {
     setBattleResults([]);
 
     try {
-      // Fetch battle results
+      // Fetch battle results with conversation history
       const response = await fetch("/api/a4f-battle", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: userPrompt }),
+        body: JSON.stringify({ 
+          prompt: userPrompt,
+          conversationHistory 
+        }),
       });
 
       const data = await response.json();
@@ -39,8 +43,16 @@ export default function ChatPage() {
       if (data.success) {
         setBattleResults(data.results);
 
+        // Update conversation history with user prompt and AI responses
+        const newHistory = [
+          ...conversationHistory,
+          { role: "user", content: userPrompt },
+          { role: "assistant", content: data.results[0].text } // Using first model's response
+        ];
+        setConversationHistory(newHistory);
+
         // Save to database
-        await fetch("/api/chats", {
+        const saveResponse = await fetch("/api/chats", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -48,6 +60,13 @@ export default function ChatPage() {
             responses: data.results,
           }),
         });
+        
+        const saveData = await saveResponse.json();
+        console.log("Chat save response:", saveData);
+        
+        if (!saveData.success) {
+          console.error("Failed to save chat:", saveData.error);
+        }
       } else {
         console.error("Battle failed:", data.error);
       }
@@ -56,6 +75,12 @@ export default function ChatPage() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleClearConversation = () => {
+    setConversationHistory([]);
+    setBattleResults([]);
+    setPrompt("");
   };
 
   const modelColors: Record<string, "orange" | "red" | "amber"> = {
@@ -76,11 +101,24 @@ export default function ChatPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-12"
           >
-            <h1 className="text-4xl sm:text-5xl font-orbitron font-black text-white mb-4">
-              Welcome, <span className="text-accent">{user?.firstName}</span>
-            </h1>
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <h1 className="text-4xl sm:text-5xl font-orbitron font-black text-white">
+                Welcome, <span className="text-accent">{user?.firstName}</span>
+              </h1>
+              {conversationHistory.length > 0 && (
+                <button
+                  onClick={handleClearConversation}
+                  className="px-4 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-500 font-semibold transition-all duration-200"
+                  title="Clear conversation history"
+                >
+                  Clear Chat
+                </button>
+              )}
+            </div>
             <p className="text-softGray text-lg">
-              Enter your prompt below to battle the top AI models
+              {conversationHistory.length > 0 
+                ? `Chatting continuously (${Math.floor(conversationHistory.length / 2)} messages)`
+                : "Enter your prompt below to battle the top AI models"}
             </p>
           </motion.div>
 

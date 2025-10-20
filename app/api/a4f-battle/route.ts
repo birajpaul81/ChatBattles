@@ -3,7 +3,7 @@ import { a4fClient, AI_MODELS } from "@/lib/a4fClient";
 
 export async function POST(req: Request) {
   try {
-    const { prompt } = await req.json();
+    const { prompt, conversationHistory = [] } = await req.json();
 
     if (!prompt || typeof prompt !== "string") {
       return NextResponse.json(
@@ -14,12 +14,18 @@ export async function POST(req: Request) {
 
     const models = AI_MODELS.map((m) => m.id);
 
+    // Build messages array with conversation history
+    const messages = [
+      ...conversationHistory,
+      { role: "user", content: prompt }
+    ];
+
     const results = await Promise.all(
       models.map(async (model, index) => {
         try {
           const completion = await a4fClient.chat.completions.create({
             model,
-            messages: [{ role: "user", content: prompt }],
+            messages,
             temperature: 0.7,
             max_tokens: 1000,
           });

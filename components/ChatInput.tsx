@@ -6,9 +6,11 @@ import { motion } from "framer-motion";
 interface ChatInputProps {
   onSubmit: (prompt: string) => void;
   isLoading: boolean;
+  showClearButton?: boolean;
+  onClear?: () => void;
 }
 
-export default function ChatInput({ onSubmit, isLoading }: ChatInputProps) {
+export default function ChatInput({ onSubmit, isLoading, showClearButton, onClear }: ChatInputProps) {
   const [prompt, setPrompt] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
@@ -41,7 +43,9 @@ export default function ChatInput({ onSubmit, isLoading }: ChatInputProps) {
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           placeholder="Enter your prompt to battle the AIs..."
-          className="w-full bg-transparent text-white placeholder-softGray/50 px-6 py-4 pr-24 resize-none focus:outline-none min-h-[60px] max-h-[200px]"
+          className={`w-full bg-transparent text-white placeholder-softGray/50 px-6 py-4 resize-none focus:outline-none min-h-[60px] max-h-[200px] ${
+            showClearButton ? 'pr-56' : 'pr-24'
+          }`}
           rows={1}
           disabled={isLoading}
           onKeyDown={(e) => {
@@ -51,17 +55,29 @@ export default function ChatInput({ onSubmit, isLoading }: ChatInputProps) {
             }
           }}
         />
-        <button
-          type="submit"
-          disabled={!prompt.trim() || isLoading}
-          className={`absolute right-4 top-1/2 -translate-y-1/2 px-6 py-2 rounded-xl font-semibold transition-all duration-200 ${
-            prompt.trim() && !isLoading
-              ? "gradient-orange text-white glow-orange hover:scale-105"
-              : "bg-gray-700 text-gray-500 cursor-not-allowed"
-          }`}
-        >
-          {isLoading ? "..." : "Battle"}
-        </button>
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+          {showClearButton && (
+            <button
+              type="button"
+              onClick={onClear}
+              className="px-4 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-500 font-semibold transition-all duration-200"
+              title="Clear conversation history"
+            >
+              Clear
+            </button>
+          )}
+          <button
+            type="submit"
+            disabled={!prompt.trim() || isLoading}
+            className={`px-6 py-2 rounded-xl font-semibold transition-all duration-200 ${
+              prompt.trim() && !isLoading
+                ? "gradient-orange text-white glow-orange hover:scale-105"
+                : "bg-gray-700 text-gray-500 cursor-not-allowed"
+            }`}
+          >
+            {isLoading ? "..." : "Battle"}
+          </button>
+        </div>
       </div>
       <p className="text-xs text-softGray/60 text-center mt-2">
         Press Enter to send • Shift+Enter for new line

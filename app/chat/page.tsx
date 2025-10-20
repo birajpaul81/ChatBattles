@@ -101,20 +101,9 @@ export default function ChatPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-12"
           >
-            <div className="flex items-center justify-center gap-4 mb-4">
-              <h1 className="text-4xl sm:text-5xl font-orbitron font-black text-white">
-                Welcome, <span className="text-accent">{user?.firstName}</span>
-              </h1>
-              {conversationHistory.length > 0 && (
-                <button
-                  onClick={handleClearConversation}
-                  className="px-4 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-500 font-semibold transition-all duration-200"
-                  title="Clear conversation history"
-                >
-                  Clear Chat
-                </button>
-              )}
-            </div>
+            <h1 className="text-4xl sm:text-5xl font-orbitron font-black text-white mb-4">
+              Welcome, <span className="text-accent">{user?.firstName}</span>
+            </h1>
             <p className="text-softGray text-lg">
               {conversationHistory.length > 0 
                 ? `Chatting continuously (${Math.floor(conversationHistory.length / 2)} messages)`
@@ -124,7 +113,12 @@ export default function ChatPage() {
 
           {/* Chat Input */}
           <div className="mb-12">
-            <ChatInput onSubmit={handleSubmit} isLoading={isLoading} />
+            <ChatInput 
+              onSubmit={handleSubmit} 
+              isLoading={isLoading}
+              showClearButton={conversationHistory.length > 0}
+              onClear={handleClearConversation}
+            />
           </div>
 
           {/* Battle Results */}

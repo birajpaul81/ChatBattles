@@ -62,7 +62,6 @@ export default function BattleCard({
     >
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-orbitron font-bold text-white">{name}</h3>
-        <span className="text-xs text-softGray font-mono">{model}</span>
       </div>
 
       <div className="flex-1 overflow-y-auto mb-4">

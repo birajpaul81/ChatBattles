@@ -1,12 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import LoadingSkeleton from "@/components/LoadingSkeleton";
+import Toast from "@/components/Toast";
+import { useToast } from "@/lib/useToast";
+import { Search, Download, Filter } from "lucide-react";
 
 type Chat = {
   id: string;
@@ -20,6 +24,11 @@ export default function ProfilePage() {
   const [chats, setChats] = useState<Chat[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState<"newest" | "oldest">("newest");
+  const [currentPage, setCurrentPage] = useState(1);
+  const { toast, showToast, hideToast } = useToast();
+  const ITEMS_PER_PAGE = 10;
 
   const fetchChats = async () => {
     try {
@@ -43,7 +52,7 @@ export default function ProfilePage() {
   };
 
   const handleClearHistory = async () => {
-    if (!confirm("Are you sure you want to clear all chat history?")) return;
+    if (!confirm("Are you sure you want to clear all chat history? This action cannot be undone.")) return;
 
     setIsDeleting(true);
     try {
@@ -55,13 +64,58 @@ export default function ProfilePage() {
 
       if (data.success) {
         setChats([]);
+        showToast("Chat history cleared successfully", "success");
+      } else {
+        showToast("Failed to clear history", "error");
       }
     } catch (error) {
       console.error("Error clearing history:", error);
+      showToast("Error clearing history", "error");
     } finally {
       setIsDeleting(false);
     }
   };
+
+  const handleExportChat = (chat: Chat) => {
+    const content = `Prompt: ${chat.prompt}\n\nDate: ${new Date(chat.created_at).toLocaleString()}\n\n${chat.responses.map(r => `${r.name}:\n${r.text}\n\n`).join("---\n\n")}`;
+    const blob = new Blob([content], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `chat-${new Date(chat.created_at).getTime()}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast("Chat exported successfully", "success");
+  };
+
+  // Filter and sort chats
+  const filteredChats = useMemo(() => {
+    let filtered = chats;
+    
+    // Search filter
+    if (searchQuery) {
+      filtered = filtered.filter((chat) =>
+        chat.prompt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        chat.responses.some((r) => r.text.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+    }
+    
+    // Sort
+    filtered = [...filtered].sort((a, b) => {
+      const dateA = new Date(a.created_at).getTime();
+      const dateB = new Date(b.created_at).getTime();
+      return sortBy === "newest" ? dateB - dateA : dateA - dateB;
+    });
+    
+    return filtered;
+  }, [chats, searchQuery, sortBy]);
+
+  // Pagination
+  const totalPages = Math.ceil(filteredChats.length / ITEMS_PER_PAGE);
+  const paginatedChats = filteredChats.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
   useEffect(() => {
     fetchChats();
@@ -69,6 +123,12 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Toast
+        message={toast.message}
+        type={toast.type}
+        isVisible={toast.isVisible}
+        onClose={hideToast}
+      />
       <AnimatedBackground />
       <Navbar />
 
@@ -108,9 +168,12 @@ export default function ProfilePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
               <h2 className="text-2xl font-orbitron font-bold text-white">
-                Recent Chats
+                Chat History
+                {filteredChats.length > 0 && (
+                  <span className="text-sm text-softGray ml-2">({filteredChats.length})</span>
+                )}
               </h2>
               {chats.length > 0 && (
                 <button
@@ -118,14 +181,60 @@ export default function ProfilePage() {
                   disabled={isDeleting}
                   className="px-4 py-2 bg-red-600/20 hover:bg-red-600/30 border border-red-600/50 rounded-lg text-sm text-red-500 transition-all duration-200 disabled:opacity-50"
                 >
-                  {isDeleting ? "Clearing..." : "Clear History"}
+                  {isDeleting ? "Clearing..." : "Clear All History"}
                 </button>
               )}
             </div>
 
+            {/* Search and Filter */}
+            {chats.length > 0 && (
+              <div className="mb-6 space-y-4">
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="flex-1 relative">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-softGray" size={20} />
+                    <input
+                      type="text"
+                      placeholder="Search chats..."
+                      value={searchQuery}
+                      onChange={(e) => {
+                        setSearchQuery(e.target.value);
+                        setCurrentPage(1);
+                      }}
+                      className="w-full pl-12 pr-4 py-3 bg-black/50 backdrop-blur-sm border border-accent/30 rounded-xl text-white placeholder-softGray/50 focus:border-accent focus:outline-none transition-all"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Filter size={20} className="text-softGray" />
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value as "newest" | "oldest")}
+                      className="px-4 py-3 bg-black/50 backdrop-blur-sm border border-accent/30 rounded-xl text-white focus:border-accent focus:outline-none transition-all cursor-pointer"
+                    >
+                      <option value="newest">Newest First</option>
+                      <option value="oldest">Oldest First</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {isLoading ? (
-              <div className="text-center py-12">
-                <div className="inline-block w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin" />
+              <LoadingSkeleton type="profile" count={3} />
+            ) : filteredChats.length === 0 && searchQuery ? (
+              <div className="text-center py-20 bg-black/30 backdrop-blur-sm border border-accent/20 rounded-xl">
+                <div className="text-5xl mb-4">🔍</div>
+                <h3 className="text-xl font-orbitron font-bold text-white mb-2">
+                  No results found
+                </h3>
+                <p className="text-softGray">
+                  Try adjusting your search terms
+                </p>
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="mt-4 px-4 py-2 bg-accent/20 hover:bg-accent/30 border border-accent/50 rounded-lg text-accent transition-all"
+                >
+                  Clear Search
+                </button>
               </div>
             ) : chats.length === 0 ? (
               <div className="text-center py-20 bg-black/30 backdrop-blur-sm border border-accent/20 rounded-xl">
@@ -138,8 +247,9 @@ export default function ProfilePage() {
                 </p>
               </div>
             ) : (
-              <div className="space-y-4">
-                {chats.map((chat, index) => (
+              <>
+                <div className="space-y-4">
+                  {paginatedChats.map((chat, index) => (
                   <motion.div
                     key={chat.id}
                     initial={{ opacity: 0, x: -20 }}
@@ -148,12 +258,21 @@ export default function ProfilePage() {
                     className="bg-black/50 backdrop-blur-sm border border-accent/30 rounded-xl p-6 hover:border-accent/50 transition-all duration-300"
                   >
                     <div className="flex items-start justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-white flex-1">
-                        {chat.prompt}
-                      </h3>
-                      <span className="text-xs text-softGray ml-4">
-                        {new Date(chat.created_at).toLocaleDateString()}
-                      </span>
+                      <div className="flex-1">
+                        <h3 className="text-lg font-semibold text-white mb-1">
+                          {chat.prompt}
+                        </h3>
+                        <span className="text-xs text-softGray">
+                          {new Date(chat.created_at).toLocaleString()}
+                        </span>
+                      </div>
+                      <button
+                        onClick={() => handleExportChat(chat)}
+                        className="ml-4 p-2 bg-accent/10 hover:bg-accent/20 border border-accent/30 rounded-lg text-accent transition-all"
+                        title="Export chat"
+                      >
+                        <Download size={18} />
+                      </button>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -172,8 +291,56 @@ export default function ProfilePage() {
                       ))}
                     </div>
                   </motion.div>
-                ))}
-              </div>
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-center gap-2 mt-8">
+                    <button
+                      onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                      disabled={currentPage === 1}
+                      className="px-4 py-2 bg-black/50 backdrop-blur-sm border border-accent/30 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:border-accent transition-all"
+                    >
+                      Previous
+                    </button>
+                    <div className="flex gap-2">
+                      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                        let pageNum: number;
+                        if (totalPages <= 5) {
+                          pageNum = i + 1;
+                        } else if (currentPage <= 3) {
+                          pageNum = i + 1;
+                        } else if (currentPage >= totalPages - 2) {
+                          pageNum = totalPages - 4 + i;
+                        } else {
+                          pageNum = currentPage - 2 + i;
+                        }
+                        return (
+                          <button
+                            key={pageNum}
+                            onClick={() => setCurrentPage(pageNum)}
+                            className={`w-10 h-10 rounded-lg font-semibold transition-all ${
+                              currentPage === pageNum
+                                ? "bg-accent text-white"
+                                : "bg-black/50 border border-accent/30 text-softGray hover:border-accent hover:text-white"
+                            }`}
+                          >
+                            {pageNum}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <button
+                      onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                      disabled={currentPage === totalPages}
+                      className="px-4 py-2 bg-black/50 backdrop-blur-sm border border-accent/30 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:border-accent transition-all"
+                    >
+                      Next
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </motion.div>
         </div>

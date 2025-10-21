@@ -3,11 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserButton, useUser } from "@clerk/nextjs";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
 
 export default function Navbar() {
   const pathname = usePathname();
   const { isSignedIn } = useUser();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -37,7 +40,18 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <div className="flex items-center space-x-8">
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden text-white p-2"
+            aria-label="Toggle menu"
+            aria-expanded={isMobileMenuOpen}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -78,6 +92,64 @@ export default function Navbar() {
             )}
           </div>
         </div>
+
+        {/* Mobile Navigation */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden border-t border-accent/20 bg-black/95 backdrop-blur-md"
+            >
+              <div className="px-4 py-4 space-y-3">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                      pathname === link.href
+                        ? "bg-accent/20 text-accent"
+                        : "text-softGray hover:bg-accent/10 hover:text-white"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+                {!isSignedIn && (
+                  <div className="space-y-2 pt-2 border-t border-accent/20">
+                    <Link
+                      href="/sign-in"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="block px-4 py-3 rounded-lg text-sm font-medium text-softGray hover:bg-accent/10 hover:text-white transition-colors"
+                    >
+                      Sign In
+                    </Link>
+                    <Link
+                      href="/sign-up"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="block px-4 py-3 gradient-orange text-white text-sm font-semibold rounded-lg text-center glow-orange"
+                    >
+                      Sign Up
+                    </Link>
+                  </div>
+                )}
+                {isSignedIn && (
+                  <div className="pt-2 border-t border-accent/20 flex justify-center">
+                    <UserButton
+                      appearance={{
+                        elements: {
+                          avatarBox: "w-10 h-10 border-2 border-accent/50",
+                        },
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.nav>
   );

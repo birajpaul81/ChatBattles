@@ -19,6 +19,14 @@
     box-shadow: 0 0 30px rgba(253, 99, 22, 0.8), 0 0 60px rgba(253, 99, 22, 0.5);
   }
 
+  .glow-red {
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.5), 0 0 40px rgba(239, 68, 68, 0.3);
+  }
+
+  .glow-amber {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.5), 0 0 40px rgba(245, 158, 11, 0.3);
+  }
+
   .gradient-orange {
     background: linear-gradient(135deg, #FD6316 0%, #FF4500 100%);
   }
@@ -30,6 +38,60 @@
   .border-glow {
     border: 1px solid rgba(253, 99, 22, 0.5);
     box-shadow: 0 0 10px rgba(253, 99, 22, 0.3);
+  }
+
+  /* Screen reader only - accessible but visually hidden */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .focus\:not-sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Better focus indicators */
+  *:focus-visible {
+    outline: 2px solid #FD6316;
+    outline-offset: 2px;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(13, 13, 13, 0.5);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(253, 99, 22, 0.5);
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(253, 99, 22, 0.8);
   }
 }
 

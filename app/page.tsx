@@ -9,10 +9,18 @@ import AnimatedBackground from "@/components/AnimatedBackground";
 export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Skip to main content for accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 px-4 py-2 bg-accent text-white rounded-lg"
+      >
+        Skip to main content
+      </a>
+      
       <AnimatedBackground />
       <Navbar />
 
-      <main className="flex-1 flex items-center justify-center px-4 py-20">
+      <main id="main-content" className="flex-1 flex items-center justify-center px-4 py-20">
         <div className="max-w-5xl w-full text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -86,7 +94,81 @@ export default function HomePage() {
               />
             </motion.div>
 
-            {/* How It Works Section */}
+            {/* Battle Mode Section */}
+            <motion.div
+              className="mt-32 mb-20"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.5 }}
+            >
+              <h2 className="text-4xl md:text-5xl font-orbitron font-black text-white mb-4">
+                ⚔️ Battle Mode in Action
+              </h2>
+              <p className="text-softGray text-lg mb-12 max-w-2xl mx-auto">
+                See how three AI models compete to give you the best answer
+              </p>
+
+              {/* Example Battle Showcase */}
+              <div className="bg-gradient-to-br from-accent/10 via-purple-600/10 to-red-600/10 border-2 border-accent/40 rounded-3xl p-8 md:p-12 max-w-6xl mx-auto">
+                {/* Question Display */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 1.6 }}
+                  className="bg-black/60 backdrop-blur-sm border border-white/20 rounded-2xl p-6 mb-10 text-center"
+                >
+                  <div className="text-accent font-semibold mb-2 text-sm uppercase tracking-wider">
+                    Your Question
+                  </div>
+                  <p className="text-white text-xl md:text-2xl font-medium">
+                    &ldquo;Explain quantum computing in simple terms&rdquo;
+                  </p>
+                </motion.div>
+
+                {/* Three AI Responses */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <BattleModeCard
+                    modelName="GPT-5-Nano"
+                    modelColor="orange"
+                    responsePreview="Quantum computers use qubits that can exist in multiple states simultaneously through superposition..."
+                    badge="Most Detailed"
+                    delay={0}
+                  />
+                  <BattleModeCard
+                    modelName="Grok-4"
+                    modelColor="red"
+                    responsePreview="Think of quantum computing as a massive parallel processor that explores many solutions at once..."
+                    badge="Best Analogy"
+                    delay={0.1}
+                  />
+                  <BattleModeCard
+                    modelName="DeepSeek"
+                    modelColor="amber"
+                    responsePreview="Quantum computing leverages quantum mechanics principles to perform calculations exponentially faster..."
+                    badge="Most Concise"
+                    delay={0.2}
+                  />
+                </div>
+
+                {/* Battle Mode Benefits */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 1.9 }}
+                  className="mt-10 text-center"
+                >
+                  <div className="inline-block bg-black/60 backdrop-blur-sm border border-accent/40 rounded-xl px-6 py-4">
+                    <p className="text-white text-sm md:text-base">
+                      <span className="text-accent font-bold">⚡ Instant comparison</span> • 
+                      <span className="text-white mx-2">Three perspectives</span> • 
+                      <span className="text-accent font-bold">Best answer wins</span>
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+
+            {/* How It Works */}
             <motion.div
               className="mt-32 mb-20"
               initial={{ opacity: 0, y: 30 }}
@@ -145,6 +227,32 @@ export default function HomePage() {
                   </p>
                 </div>
               </motion.div>
+            </motion.div>
+
+            {/* CTA Section */}
+            <motion.div
+              className="mt-32"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.8 }}
+            >
+              <div className="bg-gradient-to-r from-accent/20 to-red-600/20 border-2 border-accent/50 rounded-3xl p-12 text-center">
+                <h2 className="text-3xl md:text-4xl font-orbitron font-black text-white mb-4">
+                  Ready to Compare AI Models?
+                </h2>
+                <p className="text-softGray text-lg mb-8 max-w-2xl mx-auto">
+                  Join thousands of users who are making smarter decisions with AI battles
+                </p>
+                <Link
+                  href="/chat"
+                  className="inline-block px-12 py-5 gradient-orange text-white text-xl font-bold rounded-2xl glow-orange-strong hover:scale-110 transition-all duration-300"
+                >
+                  Start Your First Battle
+                </Link>
+                <p className="text-xs text-softGray mt-4">
+                  No credit card required • 100% Free
+                </p>
+              </div>
             </motion.div>
           </motion.div>
         </div>
@@ -210,6 +318,94 @@ function StepCard({
         {title}
       </h3>
       <p className="text-softGray text-center leading-relaxed">{description}</p>
+    </motion.div>
+  );
+}
+
+function BattleModeCard({
+  modelName,
+  modelColor,
+  responsePreview,
+  badge,
+  delay,
+}: {
+  modelName: string;
+  modelColor: "orange" | "red" | "amber";
+  responsePreview: string;
+  badge: string;
+  delay: number;
+}) {
+  const colorClasses = {
+    orange: {
+      border: "border-accent/50",
+      glow: "hover:glow-orange",
+      badge: "bg-gradient-to-r from-accent to-orange-600",
+      icon: "bg-gradient-to-br from-accent to-orange-600",
+    },
+    red: {
+      border: "border-red-500/50",
+      glow: "hover:glow-red",
+      badge: "bg-gradient-to-r from-red-500 to-red-700",
+      icon: "bg-gradient-to-br from-red-500 to-red-700",
+    },
+    amber: {
+      border: "border-amber-500/50",
+      glow: "hover:glow-amber",
+      badge: "bg-gradient-to-r from-amber-500 to-amber-700",
+      icon: "bg-gradient-to-br from-amber-500 to-amber-700",
+    },
+  };
+
+  const colors = colorClasses[modelColor];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 1.7 + delay }}
+      className={`bg-black/60 backdrop-blur-sm border-2 ${colors.border} rounded-2xl p-6 ${colors.glow} transition-all duration-300 relative`}
+    >
+      {/* Model Name Header */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <div className={`w-3 h-3 rounded-full ${colors.icon}`}></div>
+          <h3 className="text-white font-orbitron font-bold text-lg">
+            {modelName}
+          </h3>
+        </div>
+        <div className={`${colors.badge} text-white text-xs font-bold px-3 py-1 rounded-full`}>
+          {badge}
+        </div>
+      </div>
+
+      {/* Response Preview */}
+      <div className="bg-black/40 border border-white/10 rounded-xl p-4 min-h-[140px] flex items-center">
+        <p className="text-softGray text-sm leading-relaxed italic">
+          &ldquo;{responsePreview}&rdquo;
+        </p>
+      </div>
+
+      {/* Animated Typing Indicator */}
+      <div className="mt-4 flex items-center gap-2 text-xs text-white/60">
+        <div className="flex gap-1">
+          <motion.div
+            className={`w-1.5 h-1.5 rounded-full ${colors.icon}`}
+            animate={{ opacity: [0.3, 1, 0.3] }}
+            transition={{ duration: 1.5, repeat: Infinity, delay: 0 }}
+          />
+          <motion.div
+            className={`w-1.5 h-1.5 rounded-full ${colors.icon}`}
+            animate={{ opacity: [0.3, 1, 0.3] }}
+            transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}
+          />
+          <motion.div
+            className={`w-1.5 h-1.5 rounded-full ${colors.icon}`}
+            animate={{ opacity: [0.3, 1, 0.3] }}
+            transition={{ duration: 1.5, repeat: Infinity, delay: 0.6 }}
+          />
+        </div>
+        <span>AI responding...</span>
+      </div>
     </motion.div>
   );
 }

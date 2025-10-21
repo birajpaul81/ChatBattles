@@ -46,8 +46,7 @@ export async function GET() {
       .from("chats")
       .select("*")
       .eq("user_id", userId)
-      .order("created_at", { ascending: false })
-      .limit(10);
+      .order("created_at", { ascending: false });
 
     if (error) throw error;
 
@@ -61,7 +60,7 @@ export async function GET() {
   }
 }
 
-export async function DELETE() {
+export async function DELETE(req: Request) {
   try {
     const { userId } = await auth();
 
@@ -69,10 +68,21 @@ export async function DELETE() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { error } = await supabaseAdmin
+    // Get chat ID from query parameters if provided
+    const { searchParams } = new URL(req.url);
+    const chatId = searchParams.get("id");
+
+    let query = supabaseAdmin
       .from("chats")
       .delete()
       .eq("user_id", userId);
+
+    // If chat ID is provided, delete only that chat
+    if (chatId) {
+      query = query.eq("id", chatId);
+    }
+
+    const { error } = await query;
 
     if (error) throw error;
 

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useUser } from "@clerk/nextjs";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ChatInput from "@/components/ChatInput";
+import ChatInput, { AttachedFile } from "@/components/ChatInput";
 import BattleCard from "@/components/BattleCard";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
@@ -34,20 +34,45 @@ export default function ChatPage() {
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
 
-  const handleSubmit = async (userPrompt: string) => {
+  const handleSubmit = async (userPrompt: string, attachments?: AttachedFile[]) => {
     setIsLoading(true);
     setPrompt(userPrompt);
     setBattleResults([]);
     setError(null);
 
     try {
-      // Fetch battle results with conversation history
+      // Process attachments
+      const processedAttachments: Array<{type: string; data: string; filename: string}> = [];
+      
+      if (attachments && attachments.length > 0) {
+        for (const attachment of attachments) {
+          if (attachment.type === 'image' && attachment.preview) {
+            // For images, send base64 data
+            processedAttachments.push({
+              type: 'image',
+              data: attachment.preview,
+              filename: attachment.file.name
+            });
+          } else {
+            // For documents, read as text
+            const text = await attachment.file.text();
+            processedAttachments.push({
+              type: 'document',
+              data: text,
+              filename: attachment.file.name
+            });
+          }
+        }
+      }
+
+      // Fetch battle results with conversation history and attachments
       const response = await fetch("/api/a4f-battle", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           prompt: userPrompt,
-          conversationHistory 
+          conversationHistory,
+          attachments: processedAttachments.length > 0 ? processedAttachments : undefined
         }),
       });
 
@@ -133,7 +158,7 @@ export default function ChatPage() {
     };
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [conversationHistory, showKeyboardShortcuts]);
+  }, [conversationHistory, showKeyboardShortcuts, handleClearConversation]);
 
   const modelColors: Record<string, "orange" | "red" | "amber"> = {
     "provider-3/gpt-5-nano": "orange",

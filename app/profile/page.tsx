@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
@@ -10,7 +10,7 @@ import AnimatedBackground from "@/components/AnimatedBackground";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import Toast from "@/components/Toast";
 import { useToast } from "@/lib/useToast";
-import { Search, Download, Filter } from "lucide-react";
+import { Search, Download, Filter, Trash2, CheckSquare, Square } from "lucide-react";
 
 type Chat = {
   id: string;
@@ -27,6 +27,7 @@ export default function ProfilePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<"newest" | "oldest">("newest");
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedChats, setSelectedChats] = useState<Set<string>>(new Set());
   const { toast, showToast, hideToast } = useToast();
   const ITEMS_PER_PAGE = 10;
 
@@ -86,6 +87,71 @@ export default function ProfilePage() {
     a.click();
     URL.revokeObjectURL(url);
     showToast("Chat exported successfully", "success");
+  };
+
+  const toggleChatSelection = (chatId: string) => {
+    setSelectedChats(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(chatId)) {
+        newSet.delete(chatId);
+      } else {
+        newSet.add(chatId);
+      }
+      return newSet;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedChats.size === paginatedChats.length) {
+      setSelectedChats(new Set());
+    } else {
+      setSelectedChats(new Set(paginatedChats.map(chat => chat.id)));
+    }
+  };
+
+  const handleDeleteSelected = async () => {
+    if (selectedChats.size === 0) return;
+    
+    if (!confirm(`Are you sure you want to delete ${selectedChats.size} selected chat(s)? This action cannot be undone.`)) return;
+
+    setIsDeleting(true);
+    try {
+      const deletePromises = Array.from(selectedChats).map(chatId =>
+        fetch(`/api/chats?id=${chatId}`, { method: "DELETE" })
+      );
+      
+      const results = await Promise.all(deletePromises);
+      const allSuccessful = results.every(r => r.ok);
+
+      if (allSuccessful) {
+        setChats(prev => prev.filter(chat => !selectedChats.has(chat.id)));
+        setSelectedChats(new Set());
+        showToast(`${selectedChats.size} chat(s) deleted successfully`, "success");
+      } else {
+        showToast("Some chats failed to delete", "error");
+      }
+    } catch (error) {
+      console.error("Error deleting chats:", error);
+      showToast("Error deleting chats", "error");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleDownloadSelected = () => {
+    if (selectedChats.size === 0) return;
+
+    const selectedChatData = chats.filter(chat => selectedChats.has(chat.id));
+    
+    // Download each chat as a separate file
+    selectedChatData.forEach((chat, index) => {
+      // Add a small delay between downloads to avoid browser blocking
+      setTimeout(() => {
+        handleExportChat(chat);
+      }, index * 100);
+    });
+    
+    showToast(`${selectedChats.size} chat(s) will be downloaded separately`, "success");
   };
 
   // Filter and sort chats
@@ -174,16 +240,40 @@ export default function ProfilePage() {
                 {filteredChats.length > 0 && (
                   <span className="text-sm text-softGray ml-2">({filteredChats.length})</span>
                 )}
+                {selectedChats.size > 0 && (
+                  <span className="text-sm text-accent ml-2">({selectedChats.size} selected)</span>
+                )}
               </h2>
-              {chats.length > 0 && (
-                <button
-                  onClick={handleClearHistory}
-                  disabled={isDeleting}
-                  className="px-4 py-2 bg-red-600/20 hover:bg-red-600/30 border border-red-600/50 rounded-lg text-sm text-red-500 transition-all duration-200 disabled:opacity-50"
-                >
-                  {isDeleting ? "Clearing..." : "Clear All History"}
-                </button>
-              )}
+              <div className="flex gap-2">
+                {selectedChats.size > 0 && (
+                  <>
+                    <button
+                      onClick={handleDownloadSelected}
+                      className="px-4 py-2 bg-accent/10 hover:bg-accent/20 border border-accent/30 rounded-lg text-sm text-accent transition-all duration-200 flex items-center gap-2"
+                    >
+                      <Download size={16} />
+                      Download ({selectedChats.size})
+                    </button>
+                    <button
+                      onClick={handleDeleteSelected}
+                      disabled={isDeleting}
+                      className="px-4 py-2 bg-red-600/20 hover:bg-red-600/30 border border-red-600/50 rounded-lg text-sm text-red-500 transition-all duration-200 disabled:opacity-50 flex items-center gap-2"
+                    >
+                      <Trash2 size={16} />
+                      Delete ({selectedChats.size})
+                    </button>
+                  </>
+                )}
+                {chats.length > 0 && selectedChats.size === 0 && (
+                  <button
+                    onClick={handleClearHistory}
+                    disabled={isDeleting}
+                    className="px-4 py-2 bg-red-600/20 hover:bg-red-600/30 border border-red-600/50 rounded-lg text-sm text-red-500 transition-all duration-200 disabled:opacity-50"
+                  >
+                    {isDeleting ? "Clearing..." : "Clear All History"}
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Search and Filter */}
@@ -215,6 +305,19 @@ export default function ProfilePage() {
                     </select>
                   </div>
                 </div>
+                {filteredChats.length > 0 && (
+                  <button
+                    onClick={toggleSelectAll}
+                    className="flex items-center gap-2 px-4 py-2 bg-black/50 backdrop-blur-sm border border-accent/30 rounded-lg text-accent hover:border-accent transition-all"
+                  >
+                    {selectedChats.size === paginatedChats.length ? (
+                      <CheckSquare size={18} />
+                    ) : (
+                      <Square size={18} />
+                    )}
+                    {selectedChats.size === paginatedChats.length ? "Deselect All" : "Select All"}
+                  </button>
+                )}
               </div>
             )}
 
@@ -249,15 +352,29 @@ export default function ProfilePage() {
             ) : (
               <>
                 <div className="space-y-4">
-                  {paginatedChats.map((chat, index) => (
+                  {paginatedChats.map((chat, index) => {
+                    const isSelected = selectedChats.has(chat.id);
+                    return (
                   <motion.div
                     key={chat.id}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="bg-black/50 backdrop-blur-sm border border-accent/30 rounded-xl p-6 hover:border-accent/50 transition-all duration-300"
+                    className={`bg-black/50 backdrop-blur-sm border rounded-xl p-6 hover:border-accent/50 transition-all duration-300 ${
+                      isSelected ? "border-accent" : "border-accent/30"
+                    }`}
                   >
-                    <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-start gap-4 mb-4">
+                      <button
+                        onClick={() => toggleChatSelection(chat.id)}
+                        className="mt-1 p-1 hover:bg-accent/10 rounded transition-all"
+                      >
+                        {isSelected ? (
+                          <CheckSquare size={20} className="text-accent" />
+                        ) : (
+                          <Square size={20} className="text-softGray" />
+                        )}
+                      </button>
                       <div className="flex-1">
                         <h3 className="text-lg font-semibold text-white mb-1">
                           {chat.prompt}
@@ -291,7 +408,8 @@ export default function ProfilePage() {
                       ))}
                     </div>
                   </motion.div>
-                  ))}
+                  );
+                  })}
                 </div>
 
                 {/* Pagination */}

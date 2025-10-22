@@ -288,7 +288,7 @@ export default function ChatInput({ onSubmit, isLoading, showClearButton, onClea
 
       <form onSubmit={handleSubmit}>
       <div
-        className={`relative bg-black/50 backdrop-blur-sm rounded-2xl border-2 transition-all duration-300 ${
+        className={`bg-black/50 backdrop-blur-sm rounded-2xl border-2 transition-all duration-300 ${
           isFocused
             ? "border-accent glow-orange-strong"
             : "border-accent/30"
@@ -342,6 +342,7 @@ export default function ChatInput({ onSubmit, isLoading, showClearButton, onClea
             </div>
           </div>
         )}
+        {/* Textarea - Full width without padding for buttons */}
         <textarea
           ref={textareaRef}
           value={prompt}
@@ -349,9 +350,7 @@ export default function ChatInput({ onSubmit, isLoading, showClearButton, onClea
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           placeholder="Enter your prompt to battle the AIs..."
-          className={`w-full bg-transparent text-white placeholder-softGray/50 px-6 py-4 resize-none focus:outline-none min-h-[60px] max-h-[200px] ${
-            showClearButton ? 'pr-56' : 'pr-32'
-          }`}
+          className="w-full bg-transparent text-white placeholder-softGray/50 px-4 sm:px-6 py-4 resize-none focus:outline-none min-h-[60px] max-h-[200px] leading-relaxed"
           rows={1}
           disabled={isLoading}
           maxLength={MAX_CHARACTERS}
@@ -363,7 +362,8 @@ export default function ChatInput({ onSubmit, isLoading, showClearButton, onClea
           }}
           aria-label="Chat input"
         />
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+        {/* Action Buttons - Below textarea on mobile, responsive layout */}
+        <div className="flex flex-wrap items-center gap-2 px-4 sm:px-6 pb-4 pt-2 border-t border-accent/10">
           <input
             ref={fileInputRef}
             type="file"
@@ -376,7 +376,7 @@ export default function ChatInput({ onSubmit, isLoading, showClearButton, onClea
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="p-2 rounded-lg border bg-accent/10 hover:bg-accent/20 border-accent/30 text-accent transition-all duration-200"
+            className="p-2 rounded-lg border bg-accent/10 hover:bg-accent/20 border-accent/30 text-accent transition-all duration-200 flex-shrink-0"
             title="Attach files or images"
             disabled={isLoading}
           >
@@ -385,7 +385,7 @@ export default function ChatInput({ onSubmit, isLoading, showClearButton, onClea
           <button
             type="button"
             onClick={handleVoiceInput}
-            className={`p-2 rounded-lg border transition-all duration-200 relative ${
+            className={`p-2 rounded-lg border transition-all duration-200 relative flex-shrink-0 ${
               isRecording
                 ? isListening
                   ? 'bg-green-500/20 border-green-500 text-green-500 animate-pulse'
@@ -406,11 +406,13 @@ export default function ChatInput({ onSubmit, isLoading, showClearButton, onClea
               <span className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full animate-ping"></span>
             )}
           </button>
+          {/* Spacer to push Clear and Battle buttons to the right on larger screens */}
+          <div className="flex-grow"></div>
           {showClearButton && (
             <button
               type="button"
               onClick={onClear}
-              className="px-4 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-500 font-semibold transition-all duration-200"
+              className="px-3 sm:px-4 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-500 text-sm sm:text-base font-semibold transition-all duration-200 flex-shrink-0"
               title="Clear conversation history"
             >
               Clear
@@ -419,7 +421,7 @@ export default function ChatInput({ onSubmit, isLoading, showClearButton, onClea
           <button
             type="submit"
             disabled={!prompt.trim() || isLoading || isOverLimit}
-            className={`px-6 py-2 rounded-xl font-semibold transition-all duration-200 ${
+            className={`px-4 sm:px-6 py-2 rounded-xl text-sm sm:text-base font-semibold transition-all duration-200 flex-shrink-0 ${
               prompt.trim() && !isLoading && !isOverLimit
                 ? "gradient-orange text-white glow-orange hover:scale-105"
                 : "bg-gray-700 text-gray-500 cursor-not-allowed"

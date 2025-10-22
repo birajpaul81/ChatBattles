@@ -5,6 +5,12 @@ export async function POST(req: Request) {
   try {
     const { prompt, conversationHistory = [], attachments } = await req.json();
 
+    console.log('\n=== API RECEIVED ===');
+    console.log('Prompt:', prompt);
+    console.log('Conversation history length:', conversationHistory.length);
+    console.log('Conversation history:', JSON.stringify(conversationHistory, null, 2));
+    console.log('===================\n');
+
     if (!prompt || typeof prompt !== "string") {
       return NextResponse.json(
         { success: false, error: "Invalid prompt" },
@@ -47,7 +53,10 @@ export async function POST(req: Request) {
           });
           
           imageDescription = descriptionResponse.choices[0].message.content || '';
-          console.log('Image description generated:', imageDescription);
+          console.log('\n=== IMAGE DESCRIPTION GENERATED ===');
+          console.log('Vision Model:', visionModel.name);
+          console.log('Description:', imageDescription);
+          console.log('===================================\n');
         }
       } catch (error) {
         console.error('Error generating image description:', error);
@@ -61,43 +70,68 @@ export async function POST(req: Request) {
           // Build messages based on model capabilities
           const modelMessages: any[] = [];
           
-          // Process conversation history
-          for (const historyItem of conversationHistory) {
-            if (historyItem.role === 'user' && Array.isArray(historyItem.content)) {
-              // This is multimodal content
-              if (modelInfo.supportsVision) {
-                // Vision model: send as-is
-                modelMessages.push(historyItem);
-              } else {
-                // Non-vision model: convert to text-only
-                let textContent = '';
-                let hasImage = false;
-                
-                for (const part of historyItem.content) {
-                  if (part.type === 'text') {
-                    textContent += part.text;
-                  } else if (part.type === 'image_url') {
-                    hasImage = true;
+          // Process conversation history (skip for Grok-4 as we inject context into prompt)
+          const shouldProcessHistory = modelInfo.id !== "provider-5/grok-4-0709";
+          
+          if (shouldProcessHistory) {
+            for (const historyItem of conversationHistory) {
+              if (historyItem.role === 'user' && Array.isArray(historyItem.content)) {
+                // This is multimodal content
+                if (modelInfo.supportsVision) {
+                  // Vision model: send as-is
+                  modelMessages.push(historyItem);
+                } else {
+                  // Non-vision model: convert to text-only
+                  let textContent = '';
+                  let hasImage = false;
+                  
+                  for (const part of historyItem.content) {
+                    if (part.type === 'text') {
+                      textContent += part.text;
+                    } else if (part.type === 'image_url') {
+                      hasImage = true;
+                    }
                   }
+                  
+                  if (hasImage) {
+                    textContent += '\n\n[Note: Previous message contained an image that was analyzed]';
+                  }
+                  
+                  modelMessages.push({
+                    role: historyItem.role,
+                    content: textContent
+                  });
                 }
-                
-                if (hasImage) {
-                  textContent += '\n\n[Note: Previous message contained an image that was analyzed]';
-                }
-                
-                modelMessages.push({
-                  role: historyItem.role,
-                  content: textContent
-                });
+              } else {
+                // Regular text message
+                modelMessages.push(historyItem);
               }
-            } else {
-              // Regular text message
-              modelMessages.push(historyItem);
             }
           }
           
           // Process current message with attachments
           let userContent: any = prompt;
+          let imageDescriptionPrefix = '';
+          
+          // Prepare image description prefix for non-vision models
+          if (!modelInfo.supportsVision && imageDescription) {
+            imageDescriptionPrefix = `[Image Description: ${imageDescription}]\n\n`;
+          }
+          
+          // WORKAROUND: For Grok-4, prepend conversation context to the current prompt
+          // because it doesn't properly use conversation history
+          if (modelInfo.id === "provider-5/grok-4-0709" && conversationHistory.length > 0) {
+            let contextSummary = imageDescriptionPrefix; // Start with image description if available
+            contextSummary += "Previous conversation:\n";
+            for (const msg of conversationHistory) {
+              const role = msg.role === 'user' ? 'User' : 'Assistant';
+              const content = typeof msg.content === 'string' ? msg.content : '[multimodal content]';
+              contextSummary += `${role}: ${content}\n`;
+            }
+            contextSummary += `\nCurrent question: ${prompt}`;
+            userContent = contextSummary;
+            imageDescriptionPrefix = ''; // Already included in contextSummary
+          }
           
           if (attachments && attachments.length > 0) {
             if (modelInfo.supportsVision) {
@@ -120,12 +154,7 @@ export async function POST(req: Request) {
               userContent = contentParts;
             } else {
               // Non-vision model: use text with image description
-              let textContent = prompt;
-              
-              // Add image description if available
-              if (imageDescription) {
-                textContent = `[Image Description: ${imageDescription}]\n\n${prompt}`;
-              }
+              let textContent = imageDescriptionPrefix + userContent; // Prepend image description
               
               // Add document content
               for (const attachment of attachments) {
@@ -139,6 +168,15 @@ export async function POST(req: Request) {
           }
           
           modelMessages.push({ role: "user", content: userContent });
+
+          // Debug logging for non-vision models
+          if (!modelInfo.supportsVision && imageDescription) {
+            console.log(`\n=== ${modelInfo.name.toUpperCase()} - IMAGE FALLBACK ===`);
+            console.log(`Image description being used: ${imageDescription.substring(0, 100)}...`);
+            console.log(`Total messages being sent: ${modelMessages.length}`);
+            console.log(`First 200 chars of user content:`, typeof userContent === 'string' ? userContent.substring(0, 200) : '[multimodal]');
+            console.log(`=======================================\n`);
+          }
 
           const completion = await a4fClient.chat.completions.create({
             model: modelInfo.id,

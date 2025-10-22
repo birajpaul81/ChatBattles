@@ -65,6 +65,13 @@ export default function ChatPage() {
         }
       }
 
+      // Debug: Log conversation history being sent
+      console.log('=== SENDING TO API ===');
+      console.log('Conversation history length:', conversationHistory.length);
+      console.log('Conversation history:', conversationHistory);
+      console.log('Current prompt:', userPrompt);
+      console.log('=====================');
+
       // Fetch battle results with conversation history and attachments
       const response = await fetch("/api/a4f-battle", {
         method: "POST",

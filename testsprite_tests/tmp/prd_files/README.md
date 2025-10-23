@@ -8,7 +8,7 @@ A production-ready AI chat platform where users can compare responses from multi
 
 ## ✨ Features
 
-- **Battle Mode**: Compare 4 top AI models (GPT-5, Lima-4, DeepSeek v3.1, Google Gemini 2.5 Pro) side-by-side
+- **Battle Mode**: Compare 3 top AI models (GPT-5-Nano, Grok-4, DeepSeek) side-by-side
 - **Real-time Streaming**: Typewriter effect for responses
 - **Authentication**: Secure sign-in/sign-up with Clerk
 - **Chat History**: Store and view past conversations
@@ -97,11 +97,10 @@ Run this SQL in your Supabase SQL Editor to set up the database.
 2. Get your API key from the dashboard
 3. Add it to your `.env.local` file
 
-The application uses these 4 models:
-- `provider-3/gpt-5-nano` (GPT-5)
-- `provider-3/llama-4-scout` (Lima-4)
+The application uses these models:
+- `provider-3/gpt-5-nano` (GPT-5-Nano)
+- `provider-5/grok-4-0709` (Grok-4)
 - `provider-1/deepseek-v3.1` (DeepSeek v3.1)
-- `provider-3/gemini-2.5-flash-lite-preview-09-2025` (Google Gemini 2.5 Pro)
 
 ### Clerk Authentication
 

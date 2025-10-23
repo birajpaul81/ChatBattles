@@ -48,7 +48,7 @@ export default function TermsPage() {
                   The Service currently includes:
                 </p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
-                  <li>Access to GPT-5-Nano, Grok-4, and DeepSeek v3.1 models</li>
+                  <li>Access to GPT-5, Lima-4, DeepSeek v3.1, and Google Gemini 2.5 Pro models</li>
                   <li>Side-by-side AI response comparison</li>
                   <li>Chat history storage</li>
                   <li>User authentication and profile management</li>

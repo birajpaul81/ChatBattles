@@ -52,7 +52,7 @@ The remaining Clerk variables can stay as-is.
 2. Click **"Start Chatting Free"**
 3. Sign up with email
 4. Enter a prompt like: *"Explain quantum computing in simple terms"*
-5. Watch all 3 AI models battle! ⚔️
+5. Watch all 4 AI models battle! ⚔️
 
 ## Need Help?
 

@@ -10,7 +10,7 @@ const faqs = [
   {
     question: "What is ChatBattles.ai?",
     answer:
-      "ChatBattles.ai is a platform that lets you interact with multiple AI models simultaneously and compare their responses side-by-side. Currently, we support GPT-5-Nano, Grok-4, and DeepSeek v3.1.",
+      "ChatBattles.ai is a platform that lets you interact with multiple AI models simultaneously and compare their responses side-by-side. Currently, we support GPT-5, Lima-4, DeepSeek v3.1, and Google Gemini 2.5 Pro.",
   },
   {
     question: "Is ChatBattles.ai really free?",
@@ -20,12 +20,12 @@ const faqs = [
   {
     question: "Which AI models do you support?",
     answer:
-      "We currently support three cutting-edge AI models: GPT-5-Nano (from OpenAI), Grok-4 (from X.ai), and DeepSeek v3.1. Each model has unique strengths and response styles.",
+      "We currently support four cutting-edge AI models: GPT-5 (from OpenAI), Lima-4 (Meta's Llama-based model), DeepSeek v3.1, and Google Gemini 2.5 Pro. Each model has unique strengths and response styles.",
   },
   {
     question: "How does the Battle Mode work?",
     answer:
-      "When you submit a prompt, it's simultaneously sent to all three AI models. The responses appear side-by-side in real-time with a typewriter effect, allowing you to easily compare their answers, tone, and accuracy.",
+      "When you submit a prompt, it's simultaneously sent to all four AI models. The responses appear side-by-side in real-time with a typewriter effect, allowing you to easily compare their answers, tone, and accuracy.",
   },
   {
     question: "Is my data secure?",
@@ -70,7 +70,7 @@ const faqs = [
   {
     question: "Can I choose which models to battle?",
     answer:
-      "Currently, all prompts are sent to all three models automatically. We're considering adding custom model selection in the future based on user feedback.",
+      "Currently, all prompts are sent to all four models automatically. We're considering adding custom model selection in the future based on user feedback.",
   },
   {
     question: "What happens to my prompts?",

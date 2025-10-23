@@ -113,10 +113,11 @@ ChatBattles/
 ### 2. **Battle Mode** (`/chat`)
 - Protected route (requires authentication)
 - Real-time prompt input with glow effects
-- Simultaneous API calls to 3 models:
-  - GPT-5-Nano (orange border)
-  - Grok-4 (red border)
+- Simultaneous API calls to 4 models:
+  - GPT-5 (orange border)
+  - Lima-4 (red border)
   - DeepSeek v3.1 (amber border)
+  - Google Gemini 2.5 Pro (blue border)
 - Typewriter animation for responses
 - Copy to clipboard functionality
 - Auto-save to database
@@ -202,14 +203,14 @@ ChatBattles/
 5. Visit `http://localhost:3000`
 6. Sign up with test account
 7. Send a test prompt
-8. Verify all 3 models respond
+8. Verify all 4 models respond
 9. Check profile page for history
 
 ### Production Testing
 1. Deploy to Vercel
 2. Update Clerk redirect URLs
 3. Test sign-up flow
-4. Test battle mode with multiple prompts
+4. Test battle mode with multiple prompts (verify all 4 models respond)
 5. Verify database persistence
 6. Test on mobile devices
 
@@ -237,7 +238,7 @@ ChatBattles/
 
 ## 🌟 Unique Features
 
-1. **Instant Comparison**: See 3 AI models respond simultaneously
+1. **Instant Comparison**: See 4 AI models respond simultaneously
 2. **Typewriter Effect**: Responses stream in with animation
 3. **Neon Aesthetic**: Unique futuristic design language
 4. **Battle Cards**: Color-coded responses by model

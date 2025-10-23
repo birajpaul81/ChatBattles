@@ -54,7 +54,7 @@ export default function AboutPage() {
                       ⚡ Instant Comparison
                     </h3>
                     <p className="text-sm leading-relaxed">
-                      Submit one prompt and watch three top AI models respond
+                      Submit one prompt and watch four top AI models respond
                       simultaneously
                     </p>
                   </div>
@@ -95,22 +95,22 @@ export default function AboutPage() {
                 <div className="space-y-6">
                   <div className="bg-black/30 border-l-4 border-accent rounded-r-xl p-6">
                     <h3 className="text-xl font-semibold text-white mb-2">
-                      GPT-5-Nano
+                      GPT-5
                     </h3>
                     <p className="leading-relaxed">
-                      OpenAI&apos;s latest nano model, optimized for speed and
+                      OpenAI&apos;s latest model, optimized for speed and
                       efficiency without compromising on intelligence. Perfect
-                      for quick, accurate responses.
+                      for quick, accurate responses with vision capabilities.
                     </p>
                   </div>
                   <div className="bg-black/30 border-l-4 border-red-500 rounded-r-xl p-6">
                     <h3 className="text-xl font-semibold text-white mb-2">
-                      Grok-4
+                      Lima-4
                     </h3>
                     <p className="leading-relaxed">
-                      X.ai&apos;s conversational powerhouse with a unique personality.
-                      Known for its wit, real-world knowledge, and engaging
-                      responses.
+                      Meta&apos;s powerful Llama-based model with exceptional
+                      conversational abilities. Known for its balanced approach
+                      to reasoning and natural language understanding.
                     </p>
                   </div>
                   <div className="bg-black/30 border-l-4 border-amber-500 rounded-r-xl p-6">
@@ -120,6 +120,16 @@ export default function AboutPage() {
                     <p className="leading-relaxed">
                       Advanced reasoning model excelling at complex problem-solving,
                       technical analysis, and deep dives into challenging topics.
+                    </p>
+                  </div>
+                  <div className="bg-black/30 border-l-4 border-blue-500 rounded-r-xl p-6">
+                    <h3 className="text-xl font-semibold text-white mb-2">
+                      Google Gemini 2.5 Pro
+                    </h3>
+                    <p className="leading-relaxed">
+                      Google&apos;s multimodal AI with advanced vision capabilities.
+                      Excels at image analysis, creative tasks, and providing
+                      well-balanced, comprehensive responses.
                     </p>
                   </div>
                 </div>

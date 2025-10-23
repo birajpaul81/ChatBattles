@@ -1,0 +1,157 @@
+{
+  "tech_stack": [
+    "TypeScript",
+    "Next.js 15",
+    "React 19",
+    "Tailwind CSS",
+    "Framer Motion",
+    "Clerk Authentication",
+    "Supabase Database",
+    "OpenAI SDK",
+    "A4F API"
+  ],
+  "features": [
+    {
+      "name": "AI Battle Mode",
+      "description": "Core feature that allows users to compare responses from 3 AI models (GPT-5-Nano, Grok-4, DeepSeek v3.1) side-by-side in real-time with streaming responses",
+      "files": [
+        "app/chat/page.tsx",
+        "app/api/a4f-battle/route.ts",
+        "components/BattleCard.tsx",
+        "lib/a4fClient.ts"
+      ]
+    },
+    {
+      "name": "Chat Input with Attachments",
+      "description": "Advanced chat input component supporting text, images, and document attachments with drag-and-drop functionality",
+      "files": [
+        "components/ChatInput.tsx"
+      ]
+    },
+    {
+      "name": "User Authentication",
+      "description": "Secure authentication system using Clerk for sign-in, sign-up, and user session management",
+      "files": [
+        "app/sign-in/[[...sign-in]]/page.tsx",
+        "app/sign-up/[[...sign-up]]/page.tsx",
+        "middleware.ts",
+        "app/layout.tsx"
+      ]
+    },
+    {
+      "name": "Chat History Management",
+      "description": "Store, retrieve, search, filter, and delete chat conversations with pagination and bulk operations",
+      "files": [
+        "app/profile/page.tsx",
+        "app/api/chats/route.ts",
+        "lib/supabaseClient.ts"
+      ]
+    },
+    {
+      "name": "Conversation Context",
+      "description": "Maintains conversation history to enable continuous multi-turn conversations with AI models",
+      "files": [
+        "app/chat/page.tsx",
+        "app/api/a4f-battle/route.ts"
+      ]
+    },
+    {
+      "name": "Multimodal Support",
+      "description": "Intelligent image handling with vision model analysis and fallback descriptions for non-vision models",
+      "files": [
+        "app/api/a4f-battle/route.ts",
+        "components/ChatInput.tsx",
+        "lib/a4fClient.ts"
+      ]
+    },
+    {
+      "name": "Voting System",
+      "description": "Allows users to upvote or downvote AI responses to indicate preference",
+      "files": [
+        "components/BattleCard.tsx",
+        "app/chat/page.tsx"
+      ]
+    },
+    {
+      "name": "Share Functionality",
+      "description": "Share battle results via social media or copy link to clipboard",
+      "files": [
+        "components/ShareModal.tsx",
+        "app/chat/page.tsx"
+      ]
+    },
+    {
+      "name": "Keyboard Shortcuts",
+      "description": "Productivity shortcuts for common actions (submit, clear, new chat, etc.)",
+      "files": [
+        "components/KeyboardShortcuts.tsx",
+        "app/chat/page.tsx"
+      ]
+    },
+    {
+      "name": "Toast Notifications",
+      "description": "User feedback system for success/error messages",
+      "files": [
+        "components/Toast.tsx",
+        "lib/useToast.ts"
+      ]
+    },
+    {
+      "name": "Navigation",
+      "description": "Main navigation bar with user profile, authentication status, and page links",
+      "files": [
+        "components/Navbar.tsx"
+      ]
+    },
+    {
+      "name": "Animated Background",
+      "description": "Dynamic gradient background with animations for visual appeal",
+      "files": [
+        "components/AnimatedBackground.tsx"
+      ]
+    },
+    {
+      "name": "Loading States",
+      "description": "Skeleton loading components for better UX during data fetching",
+      "files": [
+        "components/LoadingSkeleton.tsx"
+      ]
+    },
+    {
+      "name": "Landing Page",
+      "description": "Marketing homepage with features, benefits, and call-to-action",
+      "files": [
+        "app/page.tsx"
+      ]
+    },
+    {
+      "name": "Static Pages",
+      "description": "Legal and informational pages (About, Contact, FAQ, Privacy, Terms)",
+      "files": [
+        "app/about/page.tsx",
+        "app/contact/page.tsx",
+        "app/faq/page.tsx",
+        "app/privacy/page.tsx",
+        "app/terms/page.tsx"
+      ]
+    },
+    {
+      "name": "SEO Optimization",
+      "description": "Metadata, Open Graph images, sitemap, and robots.txt for search engine optimization",
+      "files": [
+        "app/opengraph-image.tsx",
+        "app/icon.tsx",
+        "app/apple-icon.tsx",
+        "app/sitemap.ts",
+        "app/robots.ts"
+      ]
+    },
+    {
+      "name": "Footer",
+      "description": "Site footer with links and branding",
+      "files": [
+        "components/Footer.tsx"
+      ]
+    }
+  ]
+}

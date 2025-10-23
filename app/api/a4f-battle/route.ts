@@ -5,11 +5,8 @@ export async function POST(req: Request) {
   try {
     const { prompt, conversationHistory = [], attachments } = await req.json();
 
-    console.log('\n=== API RECEIVED ===');
-    console.log('Prompt:', prompt);
-    console.log('Conversation history length:', conversationHistory.length);
-    console.log('Conversation history:', JSON.stringify(conversationHistory, null, 2));
-    console.log('===================\n');
+    // Minimal logging for performance
+    console.log('API: Received prompt with', conversationHistory.length, 'history items');
 
     if (!prompt || typeof prompt !== "string") {
       return NextResponse.json(
@@ -48,15 +45,12 @@ export async function POST(req: Request) {
           const descriptionResponse = await a4fClient.chat.completions.create({
             model: visionModel.id,
             messages: [{ role: "user", content: descriptionParts }],
-            temperature: 0.5,
-            max_tokens: 300,
+            temperature: 0.3,
+            max_tokens: 150,
           });
           
           imageDescription = descriptionResponse.choices[0].message.content || '';
-          console.log('\n=== IMAGE DESCRIPTION GENERATED ===');
-          console.log('Vision Model:', visionModel.name);
-          console.log('Description:', imageDescription);
-          console.log('===================================\n');
+          console.log('Image description generated:', imageDescription.substring(0, 50) + '...');
         }
       } catch (error) {
         console.error('Error generating image description:', error);
@@ -70,11 +64,10 @@ export async function POST(req: Request) {
           // Build messages based on model capabilities
           const modelMessages: any[] = [];
           
-          // Process conversation history (skip for Grok-4 as we inject context into prompt)
-          const shouldProcessHistory = modelInfo.id !== "provider-5/grok-4-0709";
-          
-          if (shouldProcessHistory) {
-            for (const historyItem of conversationHistory) {
+          // Process conversation history (only last 4 messages for speed)
+          const recentHistory = conversationHistory.slice(-4);
+          {
+            for (const historyItem of recentHistory) {
               if (historyItem.role === 'user' && Array.isArray(historyItem.content)) {
                 // This is multimodal content
                 if (modelInfo.supportsVision) {
@@ -118,21 +111,6 @@ export async function POST(req: Request) {
             imageDescriptionPrefix = `[Image Description: ${imageDescription}]\n\n`;
           }
           
-          // WORKAROUND: For Grok-4, prepend conversation context to the current prompt
-          // because it doesn't properly use conversation history
-          if (modelInfo.id === "provider-5/grok-4-0709" && conversationHistory.length > 0) {
-            let contextSummary = imageDescriptionPrefix; // Start with image description if available
-            contextSummary += "Previous conversation:\n";
-            for (const msg of conversationHistory) {
-              const role = msg.role === 'user' ? 'User' : 'Assistant';
-              const content = typeof msg.content === 'string' ? msg.content : '[multimodal content]';
-              contextSummary += `${role}: ${content}\n`;
-            }
-            contextSummary += `\nCurrent question: ${prompt}`;
-            userContent = contextSummary;
-            imageDescriptionPrefix = ''; // Already included in contextSummary
-          }
-          
           if (attachments && attachments.length > 0) {
             if (modelInfo.supportsVision) {
               // Vision model: use multimodal format
@@ -169,26 +147,31 @@ export async function POST(req: Request) {
           
           modelMessages.push({ role: "user", content: userContent });
 
-          // Debug logging for non-vision models
+          // Minimal logging
           if (!modelInfo.supportsVision && imageDescription) {
-            console.log(`\n=== ${modelInfo.name.toUpperCase()} - IMAGE FALLBACK ===`);
-            console.log(`Image description being used: ${imageDescription.substring(0, 100)}...`);
-            console.log(`Total messages being sent: ${modelMessages.length}`);
-            console.log(`First 200 chars of user content:`, typeof userContent === 'string' ? userContent.substring(0, 200) : '[multimodal]');
-            console.log(`=======================================\n`);
+            console.log(`${modelInfo.name}: Using image description`);
           }
+
+          const temperature = 0.5;
 
           const completion = await a4fClient.chat.completions.create({
             model: modelInfo.id,
             messages: modelMessages,
-            temperature: 0.7,
-            max_tokens: 1000,
+            temperature: temperature,
+            max_tokens: 500,
           });
+
+          let responseText = completion.choices[0].message.content || "No response";
+          
+          // For Google Gemini, strip out any <think> tags and their content
+          if (modelInfo.id === "provider-3/gemini-2.5-flash-lite-preview-09-2025") {
+            responseText = responseText.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+          }
 
           return {
             model: modelInfo.id,
             name: modelInfo.name,
-            text: completion.choices[0].message.content || "No response",
+            text: responseText,
           };
         } catch (error: any) {
           console.error(`Error with model ${modelInfo.id}:`, error);

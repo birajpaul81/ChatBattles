@@ -8,7 +8,7 @@ interface BattleCardProps {
   model: string;
   name: string;
   text: string;
-  color: "orange" | "red" | "amber";
+  color: "orange" | "red" | "amber" | "blue";
   isLoading?: boolean;
   index: number;
   onVote?: (model: string, vote: "up" | "down") => void;
@@ -32,9 +32,10 @@ export default function BattleCard({
   const [userVote, setUserVote] = useState<"up" | "down" | null>(null);
 
   const colorClasses = {
-    orange: "border-accent glow-orange",
-    red: "border-red-600 shadow-[0_0_20px_rgba(220,38,38,0.5)]",
-    amber: "border-amber-600 shadow-[0_0_20px_rgba(217,119,6,0.5)]",
+    orange: "border-accent hover:glow-orange-strong transition-shadow duration-300",
+    red: "border-red-500 hover:glow-red-strong transition-shadow duration-300",
+    amber: "border-amber-500 hover:glow-amber-strong transition-shadow duration-300",
+    blue: "border-blue-500 hover:glow-blue-strong transition-shadow duration-300",
   };
 
   useEffect(() => {

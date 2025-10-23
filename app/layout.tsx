@@ -9,12 +9,12 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "ChatBattles — Compare AI Models Side-by-Side",
-  description: "ChatBattles.ai lets you talk to multiple AI models at once — GPT-5-Nano, Grok-4, and DeepSeek — and see who responds best.",
-  keywords: ["AI Chat Battle", "Compare AI", "Multi-Model Chat", "AI vs AI", "GPT-5-Nano", "Grok-4", "DeepSeek"],
+  description: "ChatBattles.ai lets you talk to 4 AI models at once — GPT-5, Lima-4, DeepSeek, and Google Gemini — and see who responds best.",
+  keywords: ["AI Chat Battle", "Compare AI", "Multi-Model Chat", "AI vs AI", "GPT-5", "Lima-4", "DeepSeek", "Google Gemini", "Gemini 2.5"],
   authors: [{ name: "Biraj" }],
   openGraph: {
     title: "ChatBattles — Compare AI Models Side-by-Side",
-    description: "ChatBattles.ai lets you talk to multiple AI models at once — GPT-5-Nano, Grok-4, and DeepSeek — and see who responds best.",
+    description: "ChatBattles.ai lets you talk to 4 AI models at once — GPT-5, Lima-4, DeepSeek, and Google Gemini — and see who responds best.",
     type: "website",
     url: "https://chatbattles.ai",
   },

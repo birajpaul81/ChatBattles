@@ -73,7 +73,7 @@ After deployment, your site will be live at `https://your-app.vercel.app`
 1. Visit your deployed URL
 2. Sign up with a test account
 3. Try sending a prompt in Battle Mode
-4. Verify all 3 AI models respond
+4. Verify all 4 AI models respond
 5. Check profile page and chat history
 
 ## Custom Domain Setup

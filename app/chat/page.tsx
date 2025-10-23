@@ -167,10 +167,11 @@ export default function ChatPage() {
     return () => window.removeEventListener("keydown", handleKeyPress);
   }, [conversationHistory, showKeyboardShortcuts, handleClearConversation]);
 
-  const modelColors: Record<string, "orange" | "red" | "amber"> = {
+  const modelColors: Record<string, "orange" | "red" | "amber" | "blue"> = {
     "provider-3/gpt-5-nano": "orange",
-    "provider-5/grok-4-0709": "red",
+    "provider-3/llama-4-scout": "red",
     "provider-1/deepseek-v3.1": "amber",
+    "provider-3/gemini-2.5-flash-lite-preview-09-2025": "blue",
   };
 
   return (
@@ -283,9 +284,9 @@ export default function ChatPage() {
                 )}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                 {isLoading ? (
-                  <LoadingSkeleton type="card" count={3} />
+                  <LoadingSkeleton type="card" count={4} />
                 ) : (
                   battleResults.map((result, index) => (
                     <BattleCard

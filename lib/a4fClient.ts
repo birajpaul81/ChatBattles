@@ -6,6 +6,8 @@ const a4fBaseUrl = "https://api.a4f.co/v1";
 export const a4fClient = new OpenAI({
   apiKey: a4fApiKey,
   baseURL: a4fBaseUrl,
+  timeout: 60000, // 60s timeout - more reasonable for API calls
+  maxRetries: 2, // Allow 2 retries for reliability
 });
 
 export interface AIModel {
@@ -16,8 +18,9 @@ export interface AIModel {
 }
 
 export const AI_MODELS: AIModel[] = [
-  { id: "provider-3/gpt-5-nano", name: "GPT-5-Nano", color: "orange", supportsVision: true },
-  { id: "provider-5/grok-4-0709", name: "Grok-4", color: "red", supportsVision: false },
+  { id: "provider-3/gpt-5-nano", name: "GPT-5", color: "orange", supportsVision: true },
+  { id: "provider-3/llama-4-scout", name: "Lima-4", color: "red", supportsVision: false },
   { id: "provider-1/deepseek-v3.1", name: "DeepSeek v3.1", color: "amber", supportsVision: false },
+  { id: "provider-3/gemini-2.5-flash-lite-preview-09-2025", name: "Google Gemini 2.5 Pro", color: "blue", supportsVision: true },
 ];
 

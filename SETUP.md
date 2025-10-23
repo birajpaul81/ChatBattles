@@ -96,7 +96,7 @@ The application should now be running at [http://localhost:3000](http://localhos
 2. Click "Start Chatting Free" or "Sign Up"
 3. Create a test account
 4. Try sending a prompt in Battle Mode
-5. Check that all 3 AI models respond
+5. Check that all 4 AI models respond
 6. Visit the Profile page to see your chat history
 
 ## Troubleshooting

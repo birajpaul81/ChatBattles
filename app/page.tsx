@@ -49,9 +49,10 @@ export default function HomePage() {
               transition={{ duration: 0.8, delay: 0.3 }}
             >
               Compare answers from{" "}
-              <span className="text-accent font-semibold">GPT-5-Nano</span>,{" "}
-              <span className="text-red-500 font-semibold">Grok-4</span>, and{" "}
-              <span className="text-amber-500 font-semibold">DeepSeek</span> in
+              <span className="text-accent font-semibold">GPT-5</span>,{" "}
+              <span className="text-red-500 font-semibold">Lima-4</span>,{" "}
+              <span className="text-amber-500 font-semibold">DeepSeek</span>, and{" "}
+              <span className="text-blue-500 font-semibold">Gemini</span> in
               real-time.
             </motion.p>
 
@@ -82,8 +83,8 @@ export default function HomePage() {
               />
               <FeatureCard
                 icon="🚀"
-                title="3 Top Models"
-                description="GPT-5-Nano, Grok-4, and DeepSeek at your fingertips"
+                title="4 Top Models"
+                description="GPT-5, Lima-4, DeepSeek, and Google Gemini at your fingertips"
                 delay={0.1}
               />
               <FeatureCard
@@ -105,7 +106,7 @@ export default function HomePage() {
                 ⚔️ Battle Mode in Action
               </h2>
               <p className="text-softGray text-lg mb-12 max-w-2xl mx-auto">
-                See how three AI models compete to give you the best answer
+                See how four AI models compete to give you the best answer
               </p>
 
               {/* Example Battle Showcase */}
@@ -125,17 +126,17 @@ export default function HomePage() {
                   </p>
                 </motion.div>
 
-                {/* Three AI Responses */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Four AI Responses */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
                   <BattleModeCard
-                    modelName="GPT-5-Nano"
+                    modelName="GPT-5"
                     modelColor="orange"
                     responsePreview="Quantum computers use qubits that can exist in multiple states simultaneously through superposition..."
                     badge="Most Detailed"
                     delay={0}
                   />
                   <BattleModeCard
-                    modelName="Grok-4"
+                    modelName="Lima-4"
                     modelColor="red"
                     responsePreview="Think of quantum computing as a massive parallel processor that explores many solutions at once..."
                     badge="Best Analogy"
@@ -147,6 +148,13 @@ export default function HomePage() {
                     responsePreview="Quantum computing leverages quantum mechanics principles to perform calculations exponentially faster..."
                     badge="Most Concise"
                     delay={0.2}
+                  />
+                  <BattleModeCard
+                    modelName="Gemini 2.5"
+                    modelColor="blue"
+                    responsePreview="Quantum computing harnesses quantum phenomena like superposition and entanglement to solve complex problems..."
+                    badge="Most Balanced"
+                    delay={0.3}
                   />
                 </div>
 
@@ -160,7 +168,7 @@ export default function HomePage() {
                   <div className="inline-block bg-black/60 backdrop-blur-sm border border-accent/40 rounded-xl px-6 py-4">
                     <p className="text-white text-sm md:text-base">
                       <span className="text-accent font-bold">⚡ Instant comparison</span> • 
-                      <span className="text-white mx-2">Three perspectives</span> • 
+                      <span className="text-white mx-2">Four perspectives</span> • 
                       <span className="text-accent font-bold">Best answer wins</span>
                     </p>
                   </div>
@@ -194,14 +202,14 @@ export default function HomePage() {
                   number="2"
                   icon="⚡"
                   title="AI Models Battle"
-                  description="Your prompt is simultaneously sent to GPT-5-Nano, Grok-4, and DeepSeek v3.1"
+                  description="Your prompt is simultaneously sent to GPT-5, Lima-4, DeepSeek v3.1, and Google Gemini 2.5 Pro"
                   delay={0.1}
                 />
                 <StepCard
                   number="3"
                   icon="🎯"
                   title="Compare & Choose"
-                  description="View all three responses side-by-side and pick the best answer for your needs"
+                  description="View all four responses side-by-side and pick the best answer for your needs"
                   delay={0.2}
                 />
               </div>
@@ -217,7 +225,7 @@ export default function HomePage() {
                 </h3>
                 <div className="text-left text-softGray space-y-3">
                   <p>
-                    <span className="text-white font-semibold">Different strengths:</span> Each AI model excels at different tasks—coding, creative writing, analysis, or conversation.
+                    <span className="text-white font-semibold">Different strengths:</span> Each of the four AI models excels at different tasks—coding, creative writing, analysis, vision tasks, or conversation.
                   </p>
                   <p>
                     <span className="text-white font-semibold">Better accuracy:</span> Comparing multiple responses helps you identify the most reliable and comprehensive answer.
@@ -241,7 +249,7 @@ export default function HomePage() {
                   Ready to Compare AI Models?
                 </h2>
                 <p className="text-softGray text-lg mb-8 max-w-2xl mx-auto">
-                  Join thousands of users who are making smarter decisions with AI battles
+                  Join thousands of users comparing 4 top AI models to make smarter decisions
                 </p>
                 <Link
                   href="/chat"
@@ -330,7 +338,7 @@ function BattleModeCard({
   delay,
 }: {
   modelName: string;
-  modelColor: "orange" | "red" | "amber";
+  modelColor: "orange" | "red" | "amber" | "blue";
   responsePreview: string;
   badge: string;
   delay: number;
@@ -353,6 +361,12 @@ function BattleModeCard({
       glow: "hover:glow-amber",
       badge: "bg-gradient-to-r from-amber-500 to-amber-700",
       icon: "bg-gradient-to-br from-amber-500 to-amber-700",
+    },
+    blue: {
+      border: "border-blue-500/50",
+      glow: "hover:glow-blue",
+      badge: "bg-gradient-to-r from-blue-500 to-blue-700",
+      icon: "bg-gradient-to-br from-blue-500 to-blue-700",
     },
   };
 

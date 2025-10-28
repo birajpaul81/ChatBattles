@@ -12,8 +12,9 @@ import LoadingSkeleton from "@/components/LoadingSkeleton";
 import Toast from "@/components/Toast";
 import KeyboardShortcuts from "@/components/KeyboardShortcuts";
 import ShareModal from "@/components/ShareModal";
+import VoteStats from "@/components/VoteStats";
 import { useToast } from "@/lib/useToast";
-import { Share2 } from "lucide-react";
+import { Share2, BarChart3 } from "lucide-react";
 
 type BattleResult = {
   model: string;
@@ -31,8 +32,10 @@ export default function ChatPage() {
   const [error, setError] = useState<string | null>(null);
   const { toast, showToast, hideToast } = useToast();
   const [votes, setVotes] = useState<Record<string, { up: number; down: number }>>({});
+  const [currentChatId, setCurrentChatId] = useState<string | null>(null);
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [showVoteStats, setShowVoteStats] = useState(false);
 
   const handleSubmit = async (userPrompt: string, attachments?: AttachedFile[]) => {
     setIsLoading(true);
@@ -109,7 +112,11 @@ export default function ChatPage() {
         const saveData = await saveResponse.json();
         console.log("Chat save response:", saveData);
         
-        if (!saveData.success) {
+        if (saveData.success && saveData.data?.id) {
+          // Store chat ID for vote persistence
+          setCurrentChatId(saveData.data.id);
+          console.log("Chat ID stored:", saveData.data.id);
+        } else {
           console.error("Failed to save chat:", saveData.error);
         }
       } else {
@@ -128,7 +135,8 @@ export default function ChatPage() {
     }
   };
 
-  const handleVote = useCallback((model: string, vote: "up" | "down") => {
+  const handleVote = useCallback(async (model: string, vote: "up" | "down") => {
+    // Update local state immediately for UI responsiveness
     setVotes((prev) => {
       const current = prev[model] || { up: 0, down: 0 };
       return {
@@ -139,8 +147,38 @@ export default function ChatPage() {
         },
       };
     });
-    showToast(vote === "up" ? "Vote recorded!" : "Feedback recorded!", "success");
-  }, [showToast]);
+
+    // Persist vote to database
+    if (currentChatId) {
+      try {
+        const response = await fetch("/api/votes", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chatId: currentChatId,
+            model,
+            voteType: vote,
+          }),
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+          console.log("Vote saved to database:", data);
+          showToast(vote === "up" ? "Vote recorded!" : "Feedback recorded!", "success");
+        } else {
+          console.error("Failed to save vote:", data.error);
+          showToast("Failed to save vote. Please try again.", "error");
+        }
+      } catch (error) {
+        console.error("Error saving vote:", error);
+        showToast("Failed to save vote. Please try again.", "error");
+      }
+    } else {
+      console.warn("No chat ID available for vote persistence");
+      showToast(vote === "up" ? "Vote recorded (local only)" : "Feedback recorded (local only)", "info");
+    }
+  }, [currentChatId, showToast]);
 
   const handleClearConversation = () => {
     setConversationHistory([]);
@@ -198,6 +236,10 @@ export default function ChatPage() {
         isOpen={showShareModal}
         onClose={() => setShowShareModal(false)}
         battleData={battleResults.length > 0 ? { prompt, results: battleResults } : undefined}
+      />
+      <VoteStats
+        isOpen={showVoteStats}
+        onClose={() => setShowVoteStats(false)}
       />
       <AnimatedBackground />
       <Navbar />
@@ -274,19 +316,48 @@ export default function ChatPage() {
                   {isLoading ? "Battle in Progress..." : "Battle Results"}
                 </h2>
                 {!isLoading && battleResults.length > 0 && (
-                  <button
-                    onClick={() => setShowShareModal(true)}
-                    className="flex items-center gap-2 px-4 py-2 bg-accent/10 hover:bg-accent/20 border border-accent/30 rounded-lg text-accent transition-all"
-                  >
-                    <Share2 size={18} />
-                    <span className="hidden sm:inline">Share</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setShowVoteStats(true)}
+                      className="flex items-center gap-2 px-4 py-2 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 rounded-lg text-blue-500 transition-all"
+                      title="View vote statistics"
+                    >
+                      <BarChart3 size={18} />
+                      <span className="hidden sm:inline">Stats</span>
+                    </button>
+                    <button
+                      onClick={() => setShowShareModal(true)}
+                      className="flex items-center gap-2 px-4 py-2 bg-accent/10 hover:bg-accent/20 border border-accent/30 rounded-lg text-accent transition-all"
+                    >
+                      <Share2 size={18} />
+                      <span className="hidden sm:inline">Share</span>
+                    </button>
+                  </div>
                 )}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                 {isLoading ? (
-                  <LoadingSkeleton type="card" count={4} />
+                  // Show individual thinking states for each model
+                  Object.entries(modelColors).map(([modelId, color], index) => {
+                    const modelNames: Record<string, string> = {
+                      'provider-3/gpt-5-nano': 'GPT-5',
+                      'provider-3/llama-4-scout': 'Lima-4',
+                      'provider-1/deepseek-v3.1': 'DeepSeek v3.1',
+                      'provider-3/gemini-2.5-flash-lite-preview-09-2025': 'Google Gemini 2.5 Pro'
+                    };
+                    return (
+                      <BattleCard
+                        key={modelId}
+                        model={modelId}
+                        name={modelNames[modelId] || 'AI Model'}
+                        text=""
+                        color={color}
+                        isLoading={true}
+                        index={index}
+                      />
+                    );
+                  })
                 ) : (
                   battleResults.map((result, index) => (
                     <BattleCard

@@ -15,49 +15,50 @@ export async function POST(req: Request) {
       );
     }
 
-    // Step 1: If images are present, get description from vision model first
-    let imageDescription = '';
+    // Check if images are present
     const hasImages = attachments && attachments.some((a: any) => a.type === 'image');
+
+    // Step 1: Process vision models first if images are present
+    let visionAnalysis = '';
+    const visionModels = AI_MODELS.filter(m => m.supportsVision);
+    const nonVisionModels = AI_MODELS.filter(m => !m.supportsVision);
     
-    if (hasImages) {
+    if (hasImages && visionModels.length > 0) {
+      // Get analysis from first vision model (GPT-5-Nano)
+      const primaryVisionModel = visionModels[0];
       try {
-        const visionModel = AI_MODELS.find(m => m.supportsVision);
-        if (visionModel) {
-          // Build multimodal message for image description
-          const descriptionParts: any[] = [
-            { 
-              type: "text", 
-              text: "Please provide a detailed description of the image(s) in 2-3 sentences. Focus on the key visual elements, text (if any), and overall context." 
-            }
-          ];
-          
-          for (const attachment of attachments) {
-            if (attachment.type === 'image') {
-              descriptionParts.push({
-                type: "image_url",
-                image_url: {
-                  url: attachment.data
-                }
-              });
-            }
+        const analysisMessages: any[] = [
+          {
+            role: "user",
+            content: [
+              { type: "text", text: "Provide a detailed description of this image in 3-4 sentences. Focus on key visual elements, composition, colors, mood, and any text or objects present." },
+              ...attachments
+                .filter((a: any) => a.type === 'image')
+                .map((a: any) => ({
+                  type: "image_url",
+                  image_url: { url: a.data }
+                }))
+            ]
           }
-          
-          const descriptionResponse = await a4fClient.chat.completions.create({
-            model: visionModel.id,
-            messages: [{ role: "user", content: descriptionParts }],
-            temperature: 0.3,
-            max_tokens: 150,
-          });
-          
-          imageDescription = descriptionResponse.choices[0].message.content || '';
-          console.log('Image description generated:', imageDescription.substring(0, 50) + '...');
-        }
+        ];
+
+        const analysisResponse = await a4fClient.chat.completions.create({
+          model: primaryVisionModel.id,
+          messages: analysisMessages,
+          temperature: 0.3,
+          max_tokens: 200,
+        });
+
+        visionAnalysis = analysisResponse.choices[0].message.content || '';
+        console.log('Vision analysis generated for non-vision models');
       } catch (error) {
-        console.error('Error generating image description:', error);
+        console.error('Failed to generate vision analysis:', error);
       }
     }
 
     // Step 2: Process all models with appropriate content
+    // Vision models receive images directly
+    // Non-vision models receive vision analysis if available
     const results = await Promise.all(
       AI_MODELS.map(async (modelInfo) => {
         try {
@@ -104,12 +105,6 @@ export async function POST(req: Request) {
           
           // Process current message with attachments
           let userContent: any = prompt;
-          let imageDescriptionPrefix = '';
-          
-          // Prepare image description prefix for non-vision models
-          if (!modelInfo.supportsVision && imageDescription) {
-            imageDescriptionPrefix = `[Image Description: ${imageDescription}]\n\n`;
-          }
           
           if (attachments && attachments.length > 0) {
             if (modelInfo.supportsVision) {
@@ -131,8 +126,37 @@ export async function POST(req: Request) {
               
               userContent = contentParts;
             } else {
-              // Non-vision model: use text with image description
-              let textContent = imageDescriptionPrefix + userContent; // Prepend image description
+              // Non-vision model: skip images, only process documents
+              let textContent = '';
+              
+              // Add helpful context if images are present
+              if (hasImages) {
+                // Check if user is asking for image analysis or prompt generation
+                const isAskingForAnalysis = /analyze|describe|what.*image|tell.*about.*image|see.*image/i.test(prompt);
+                const isAskingForPrompt = /prompt|recreate|generate.*similar|create.*same|replicate|write.*prompt/i.test(prompt);
+                
+                if (visionAnalysis && isAskingForPrompt) {
+                  // User wants prompt generation and we have vision analysis
+                  textContent = `[SYSTEM NOTE: The user has uploaded an image and wants help creating a detailed prompt to recreate it. Here is the image description to work with.]\n\n[Image Description: ${visionAnalysis}]\n\nUser's request: ${prompt}\n\nProvide a detailed analysis of the image, breaking down key elements like subject, mood, lighting, colors, composition, and style. Then create a comprehensive, detailed prompt suitable for AI image generation tools like Midjourney, DALL-E, or Stable Diffusion. Be thorough and professional.`;
+                } else if (visionAnalysis && isAskingForAnalysis) {
+                  // User wants analysis and we have it
+                  textContent = `[SYSTEM NOTE: The user wants image analysis. Here is the image description.]\n\n[Image Description: ${visionAnalysis}]\n\nUser's request: ${prompt}\n\nProvide detailed, professional insights about the image. Analyze the composition, elements, mood, colors, and any notable features.`;
+                } else if (visionAnalysis) {
+                  // We have analysis but unclear what user wants
+                  textContent = `[Image Description: ${visionAnalysis}]\n\n${prompt}`;
+                } else if (isAskingForPrompt) {
+                  // No analysis available but user wants prompt
+                  textContent = `[SYSTEM NOTE: The user has uploaded an image and wants help creating a prompt to recreate it. You cannot see the image. Suggest checking the GPT-5-Nano or Gemini models' responses for image analysis, then offer to help craft a detailed prompt based on their description.]\n\nUser's request: ${prompt}`;
+                } else if (isAskingForAnalysis) {
+                  // No analysis available and user wants analysis
+                  textContent = `[SYSTEM NOTE: The user has uploaded an image for analysis, but you are a text-only model. Suggest they check the GPT-5-Nano or Gemini 2.5 responses in this battle for image analysis.]\n\nUser's request: ${prompt}`;
+                } else {
+                  // No analysis and unclear intent
+                  textContent = `[SYSTEM NOTE: The user has uploaded an image but you cannot view it. Ask them to describe the image if they need your help with it.]\n\nUser's request: ${prompt}`;
+                }
+              } else {
+                textContent = prompt;
+              }
               
               // Add document content
               for (const attachment of attachments) {
@@ -147,38 +171,94 @@ export async function POST(req: Request) {
           
           modelMessages.push({ role: "user", content: userContent });
 
-          // Minimal logging
-          if (!modelInfo.supportsVision && imageDescription) {
-            console.log(`${modelInfo.name}: Using image description`);
-          }
-
           const temperature = 0.5;
 
-          const completion = await a4fClient.chat.completions.create({
-            model: modelInfo.id,
-            messages: modelMessages,
-            temperature: temperature,
-            max_tokens: 500,
-          });
+          try {
+            const completion = await a4fClient.chat.completions.create({
+              model: modelInfo.id,
+              messages: modelMessages,
+              temperature: temperature,
+              max_tokens: 500,
+            });
 
-          let responseText = completion.choices[0].message.content || "No response";
-          
-          // For Google Gemini, strip out any <think> tags and their content
-          if (modelInfo.id === "provider-3/gemini-2.5-flash-lite-preview-09-2025") {
-            responseText = responseText.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+            let responseText = completion.choices[0].message.content || "No response";
+            
+            // For Google Gemini, strip out any <think> tags and their content
+            if (modelInfo.id === "provider-3/gemini-2.5-flash-lite-preview-09-2025") {
+              responseText = responseText.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+            }
+
+            return {
+              model: modelInfo.id,
+              name: modelInfo.name,
+              text: responseText,
+            };
+          } catch (apiError: any) {
+            // If it's a vision model with images, try again without images
+            if (modelInfo.supportsVision && hasImages && apiError.status === 500) {
+              console.log(`${modelInfo.name}: Retrying without images due to API error`);
+              
+              try {
+                // Retry with text-only
+                const textOnlyMessages = modelMessages.map(msg => {
+                  if (Array.isArray(msg.content)) {
+                    // Extract only text parts
+                    const textParts = msg.content.filter((part: any) => part.type === 'text');
+                    return {
+                      ...msg,
+                      content: textParts.map((p: any) => p.text).join('\n') + '\n\n[Note: Image processing temporarily unavailable for this model]'
+                    };
+                  }
+                  return msg;
+                });
+
+                const retryCompletion = await a4fClient.chat.completions.create({
+                  model: modelInfo.id,
+                  messages: textOnlyMessages,
+                  temperature: temperature,
+                  max_tokens: 500,
+                });
+
+                let responseText = retryCompletion.choices[0].message.content || "No response";
+                
+                if (modelInfo.id === "provider-3/gemini-2.5-flash-lite-preview-09-2025") {
+                  responseText = responseText.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+                }
+
+                return {
+                  model: modelInfo.id,
+                  name: modelInfo.name,
+                  text: `⚠️ Image processing temporarily unavailable. Text response:\n\n${responseText}`,
+                };
+              } catch (retryError) {
+                // If retry also fails, return error
+                throw apiError;
+              }
+            }
+            
+            // If not a vision model or retry failed, throw the error
+            throw apiError;
           }
-
-          return {
-            model: modelInfo.id,
-            name: modelInfo.name,
-            text: responseText,
-          };
         } catch (error: any) {
           console.error(`Error with model ${modelInfo.id}:`, error);
+          
+          // Provide more helpful error messages
+          let errorMessage = "Failed to get response";
+          
+          if (error.status === 500) {
+            errorMessage = "The AI service is temporarily unavailable. Please try again.";
+          } else if (error.status === 429) {
+            errorMessage = "Rate limit reached. Please wait a moment and try again.";
+          } else if (error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT') {
+            errorMessage = "Request timed out. The model may be overloaded.";
+          } else if (error.message) {
+            errorMessage = error.message;
+          }
+          
           return {
             model: modelInfo.id,
             name: modelInfo.name,
-            text: `Error: ${error.message || "Failed to get response"}`,
+            text: `⚠️ Error: ${errorMessage}`,
           };
         }
       })

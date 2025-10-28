@@ -100,24 +100,59 @@ export default function BattleCard({
 
       <div className={`flex-1 overflow-y-auto mb-4 ${isExpanded ? 'max-h-[400px]' : 'max-h-[200px]'}`}>
         {isLoading ? (
-          <div className="flex items-center justify-center h-full">
+          <div className="flex flex-col items-center justify-center h-full gap-4">
+            {/* Thinking animation with model-specific color */}
             <div className="flex space-x-2">
               <motion.div
-                className="w-3 h-3 bg-accent rounded-full"
-                animate={{ scale: [1, 1.5, 1] }}
-                transition={{ duration: 1, repeat: Infinity, delay: 0 }}
+                className={`w-3 h-3 rounded-full ${
+                  color === 'orange' ? 'bg-accent' :
+                  color === 'red' ? 'bg-red-500' :
+                  color === 'amber' ? 'bg-amber-500' :
+                  'bg-blue-500'
+                }`}
+                animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 0.8, repeat: Infinity, delay: 0 }}
               />
               <motion.div
-                className="w-3 h-3 bg-accent rounded-full"
-                animate={{ scale: [1, 1.5, 1] }}
-                transition={{ duration: 1, repeat: Infinity, delay: 0.2 }}
+                className={`w-3 h-3 rounded-full ${
+                  color === 'orange' ? 'bg-accent' :
+                  color === 'red' ? 'bg-red-500' :
+                  color === 'amber' ? 'bg-amber-500' :
+                  'bg-blue-500'
+                }`}
+                animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 0.8, repeat: Infinity, delay: 0.2 }}
               />
               <motion.div
-                className="w-3 h-3 bg-accent rounded-full"
-                animate={{ scale: [1, 1.5, 1] }}
-                transition={{ duration: 1, repeat: Infinity, delay: 0.4 }}
+                className={`w-3 h-3 rounded-full ${
+                  color === 'orange' ? 'bg-accent' :
+                  color === 'red' ? 'bg-red-500' :
+                  color === 'amber' ? 'bg-amber-500' :
+                  'bg-blue-500'
+                }`}
+                animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 0.8, repeat: Infinity, delay: 0.4 }}
               />
             </div>
+            {/* Thinking text */}
+            <motion.p
+              className="text-softGray text-sm font-medium"
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              {name} is thinking...
+            </motion.p>
+            {/* Pulsing glow effect */}
+            <motion.div
+              className={`w-16 h-16 rounded-full blur-xl ${
+                color === 'orange' ? 'bg-accent/30' :
+                color === 'red' ? 'bg-red-500/30' :
+                color === 'amber' ? 'bg-amber-500/30' :
+                'bg-blue-500/30'
+              }`}
+              animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
           </div>
         ) : (
           <p className="text-softGray leading-relaxed whitespace-pre-wrap">

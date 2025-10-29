@@ -191,12 +191,21 @@ export default function ChatPage() {
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      // Escape to clear conversation
-      if (e.key === "Escape" && conversationHistory.length > 0 && !showKeyboardShortcuts) {
+      // Check if user is typing in an input, textarea, or contenteditable element
+      const target = e.target as HTMLElement;
+      const isTyping = 
+        target.tagName === "INPUT" || 
+        target.tagName === "TEXTAREA" ||
+        target.isContentEditable ||
+        target.closest('input') !== null ||
+        target.closest('textarea') !== null;
+      
+      // Escape to clear conversation (only when not typing)
+      if (e.key === "Escape" && conversationHistory.length > 0 && !showKeyboardShortcuts && !isTyping) {
         handleClearConversation();
       }
-      // ? to toggle shortcuts modal
-      if (e.key === "?" && !showKeyboardShortcuts) {
+      // ? to toggle shortcuts modal (only when not typing)
+      if (e.key === "?" && !showKeyboardShortcuts && !isTyping) {
         e.preventDefault();
         setShowKeyboardShortcuts(true);
       }
@@ -342,7 +351,7 @@ export default function ChatPage() {
                   Object.entries(modelColors).map(([modelId, color], index) => {
                     const modelNames: Record<string, string> = {
                       'provider-3/gpt-5-nano': 'GPT-5',
-                      'provider-3/llama-4-scout': 'Lima-4',
+                      'provider-3/llama-4-scout': 'Llama-4',
                       'provider-1/deepseek-v3.1': 'DeepSeek v3.1',
                       'provider-3/gemini-2.5-flash-lite-preview-09-2025': 'Google Gemini 2.5 Pro'
                     };

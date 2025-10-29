@@ -13,12 +13,13 @@
   "features": [
     {
       "name": "AI Battle Mode",
-      "description": "Core feature that allows users to compare responses from 3 AI models (GPT-5-Nano, Grok-4, DeepSeek v3.1) side-by-side in real-time with streaming responses",
+      "description": "Core feature that allows users to compare responses from 4 AI models (GPT-5, Llama-4, DeepSeek v3.1, Google Gemini 2.5 Pro) side-by-side in real-time with automatic fallback support",
       "files": [
         "app/chat/page.tsx",
         "app/api/a4f-battle/route.ts",
         "components/BattleCard.tsx",
-        "lib/a4fClient.ts"
+        "lib/a4fClient.ts",
+        "lib/openRouterClient.ts"
       ]
     },
     {
@@ -66,10 +67,12 @@
     },
     {
       "name": "Voting System",
-      "description": "Allows users to upvote or downvote AI responses to indicate preference",
+      "description": "Allows users to upvote or downvote AI responses to indicate preference, with vote persistence to Supabase database and vote statistics display",
       "files": [
         "components/BattleCard.tsx",
-        "app/chat/page.tsx"
+        "components/VoteStats.tsx",
+        "app/chat/page.tsx",
+        "app/api/votes/route.ts"
       ]
     },
     {

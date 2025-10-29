@@ -10,7 +10,7 @@ const faqs = [
   {
     question: "What is ChatBattles.ai?",
     answer:
-      "ChatBattles.ai is a platform that lets you interact with multiple AI models simultaneously and compare their responses side-by-side. Currently, we support GPT-5, Lima-4, DeepSeek v3.1, and Google Gemini 2.5 Pro.",
+      "ChatBattles.ai is a platform that lets you interact with multiple AI models simultaneously and compare their responses side-by-side. Currently, we support GPT-5, Llama-4, DeepSeek v3.1, and Google Gemini 2.5 Pro.",
   },
   {
     question: "Is ChatBattles.ai really free?",
@@ -20,7 +20,7 @@ const faqs = [
   {
     question: "Which AI models do you support?",
     answer:
-      "We currently support four cutting-edge AI models: GPT-5 (from OpenAI), Lima-4 (Meta's Llama-based model), DeepSeek v3.1, and Google Gemini 2.5 Pro. Each model has unique strengths and response styles.",
+      "We currently support four cutting-edge AI models: GPT-5 (from OpenAI), Llama-4 (Meta's Llama-based model), DeepSeek v3.1, and Google Gemini 2.5 Pro. Each model has unique strengths and response styles.",
   },
   {
     question: "How does the Battle Mode work?",
@@ -45,7 +45,7 @@ const faqs = [
   {
     question: "Can I use ChatBattles.ai for commercial purposes?",
     answer:
-      "Yes, you can use the AI responses for commercial purposes, subject to the terms of service of the respective AI model providers (OpenAI, X.ai, DeepSeek). Please review our Terms of Service for details.",
+      "Yes, you can use the AI responses for commercial purposes, subject to the terms of service of the respective AI model providers (OpenAI, Meta, DeepSeek, Google). Please review our Terms of Service for details.",
   },
   {
     question: "What can I use ChatBattles.ai for?",

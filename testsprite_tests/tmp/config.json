@@ -3,14 +3,16 @@
   "type": "frontend",
   "scope": "codebase",
   "localEndpoint": "http://localhost:3000",
+  "loginUser": "palbiraj4@gmail.com",
+  "loginPassword": "Bir@j9836926459",
   "executionArgs": {
-    "projectName": "ChatBattles",
-    "projectPath": "f:\\ChatBattles",
+    "projectName": "ChatBattles_clean",
+    "projectPath": "F:\\ChatBattles_clean",
     "testIds": [],
     "additionalInstruction": "",
     "envs": {
       "API_KEY": "sk-user-wBlha5aHgBYRDwF8ryw-LkCTsYnlfpO5iyPnF5WuLnYJwwdjYrKxw2qP8zLxFE0LUppOcZwPUNZXybZeBSrv8l22nkaTJR90eL1VnI9NZmFJGLAVslG1HM3PgZiVa1IXQCc"
     }
   },
-  "proxy": "http://8a662214-12de-4c5d-a04d-606d74b12bf1:8As3AUbhnYsNf9sNwdS79vWtWq7NX1cn@tun.testsprite.com:8080"
+  "proxy": "http://a8a5475a-9a93-49f5-b0e0-13ea8f0933f0:i7xqHDNVY9W4Y5hIGDiNlPL3KiTwUgHk@tun.testsprite.com:8080"
 }

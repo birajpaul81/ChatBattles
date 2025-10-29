@@ -33,7 +33,7 @@ export default function ShareModal({ isOpen, onClose, battleData }: ShareModalPr
   const shareUrl = typeof window !== "undefined" ? window.location.origin + "/chat" : "";
   const shareText = battleData
     ? `Check out this AI battle on ChatBattles.ai: "${battleData.prompt}"`
-    : "Compare responses from GPT-5, Lima-4, DeepSeek, and Google Gemini on ChatBattles.ai";
+    : "Compare responses from GPT-5, Llama-4, DeepSeek, and Google Gemini on ChatBattles.ai";
 
   const handleCopyLink = async () => {
     try {

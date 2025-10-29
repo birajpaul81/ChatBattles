@@ -23,7 +23,7 @@ export const AI_MODELS: AIModel[] = [
   { id: "provider-3/gpt-5-nano", name: "GPT-5", color: "orange", supportsVision: true },
   { 
     id: "provider-3/llama-4-scout", 
-    name: "Lima-4", 
+    name: "Llama-4", 
     color: "red", 
     supportsVision: false,
     fallbackId: "meta-llama/llama-4-scout:free",

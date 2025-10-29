@@ -32,6 +32,17 @@ export default function SignUpPage() {
               formFieldWarningText: "text-yellow-400",
               footerPages: "bg-black/50 border border-accent/30 rounded-xl",
               otpCodeFieldInput: "bg-white/10 border-2 border-white/20 text-white focus:border-accent rounded-lg",
+              formFieldOptionalLabel: "text-softGray text-sm",
+              formFieldHintText: "text-softGray text-sm",
+              formResendCodeLink: "text-accent hover:text-accent/80 font-semibold",
+              alternativeMethodsBlockButton: "text-accent hover:text-accent/80 font-semibold",
+              alternativeMethodsBlockButtonText: "text-accent",
+              formFieldInfoText: "text-softGray text-sm",
+              formHeaderText: "text-white",
+              formHeaderSubtitle: "text-softGray",
+              backButton: "text-accent hover:text-accent/80 font-semibold",
+              backLink: "text-accent hover:text-accent/80 font-semibold",
+              backRow: "text-accent",
             },
           }}
         />

@@ -50,7 +50,7 @@ export default function HomePage() {
             >
               Compare answers from{" "}
               <span className="text-accent font-semibold">GPT-5</span>,{" "}
-              <span className="text-red-500 font-semibold">Lima-4</span>,{" "}
+              <span className="text-red-500 font-semibold">Llama-4</span>,{" "}
               <span className="text-amber-500 font-semibold">DeepSeek</span>, and{" "}
               <span className="text-blue-500 font-semibold">Gemini</span> in
               real-time.
@@ -84,7 +84,7 @@ export default function HomePage() {
               <FeatureCard
                 icon="🚀"
                 title="4 Top Models"
-                description="GPT-5, Lima-4, DeepSeek, and Google Gemini at your fingertips"
+                description="GPT-5, Llama-4, DeepSeek, and Google Gemini at your fingertips"
                 delay={0.1}
               />
               <FeatureCard
@@ -136,7 +136,7 @@ export default function HomePage() {
                     delay={0}
                   />
                   <BattleModeCard
-                    modelName="Lima-4"
+                    modelName="Llama-4"
                     modelColor="red"
                     responsePreview="Think of quantum computing as a massive parallel processor that explores many solutions at once..."
                     badge="Best Analogy"
@@ -202,7 +202,7 @@ export default function HomePage() {
                   number="2"
                   icon="⚡"
                   title="AI Models Battle"
-                  description="Your prompt is simultaneously sent to GPT-5, Lima-4, DeepSeek v3.1, and Google Gemini 2.5 Pro"
+                  description="Your prompt is simultaneously sent to GPT-5, Llama-4, DeepSeek v3.1, and Google Gemini 2.5 Pro"
                   delay={0.1}
                 />
                 <StepCard

@@ -105,7 +105,7 @@ export default function AboutPage() {
                   </div>
                   <div className="bg-black/30 border-l-4 border-red-500 rounded-r-xl p-6">
                     <h3 className="text-xl font-semibold text-white mb-2">
-                      Lima-4
+                      Llama-4
                     </h3>
                     <p className="leading-relaxed">
                       Meta&apos;s powerful Llama-based model with exceptional

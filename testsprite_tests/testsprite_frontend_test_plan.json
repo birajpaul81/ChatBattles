@@ -1,662 +1,597 @@
 [
   {
     "id": "TC001",
-    "title": "User sign-up with valid credentials",
-    "description": "Verify that a new user can successfully sign up using valid email and password, and receives a confirmation of account creation.",
+    "title": "User Sign-Up Flow",
+    "description": "Verify that new users can successfully sign up using the Clerk authentication sign-up page with all required fields and validations.",
     "category": "functional",
     "priority": "High",
     "steps": [
       {
         "type": "action",
-        "description": "Navigate to the sign-up page"
+        "description": "Navigate to the sign-up page."
       },
       {
         "type": "action",
-        "description": "Input valid email address, strong password, and any required information"
+        "description": "Fill out the sign-up form with valid email, username, and password."
       },
       {
         "type": "action",
-        "description": "Submit the sign-up form"
+        "description": "Submit the sign-up form."
       },
       {
         "type": "assertion",
-        "description": "Verify user is registered and redirected to authenticated area"
+        "description": "Confirm that the user is redirected to the authenticated landing page or Battle Mode interface."
       },
       {
         "type": "assertion",
-        "description": "Check for welcome notification or confirmation message"
+        "description": "Verify that the user session is established and persists."
       }
     ]
   },
   {
     "id": "TC002",
-    "title": "User sign-up with existing email",
-    "description": "Verify that sign-up fails with an appropriate error message when using an email already registered.",
-    "category": "error handling",
+    "title": "User Sign-In Flow",
+    "description": "Verify that returning users can successfully sign in through Clerk authentication with valid credentials and access protected routes.",
+    "category": "functional",
     "priority": "High",
     "steps": [
       {
         "type": "action",
-        "description": "Navigate to sign-up page"
+        "description": "Navigate to the sign-in page."
       },
       {
         "type": "action",
-        "description": "Input an email address already registered and valid password"
+        "description": "Input valid existing user email and password."
       },
       {
         "type": "action",
-        "description": "Submit the sign-up form"
+        "description": "Submit the sign-in form."
       },
       {
         "type": "assertion",
-        "description": "Verify form is not submitted and error message about email already in use is displayed"
+        "description": "Confirm successful authentication and redirection to Battle Mode interface."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify session is active and protected pages are accessible."
       }
     ]
   },
   {
     "id": "TC003",
-    "title": "User sign-in with valid credentials",
-    "description": "Verify user can sign in successfully with correct email and password.",
-    "category": "functional",
-    "priority": "High",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Navigate to sign-in page"
-      },
-      {
-        "type": "action",
-        "description": "Input valid email and password"
-      },
-      {
-        "type": "action",
-        "description": "Submit the sign-in form"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify user is logged in and redirected to Battle Mode interface"
-      },
-      {
-        "type": "assertion",
-        "description": "Check session is created and protected routes are accessible"
-      }
-    ]
-  },
-  {
-    "id": "TC004",
-    "title": "User sign-in with invalid credentials",
-    "description": "Ensure that sign-in fails with invalid email/password combinations and an appropriate error message is shown.",
+    "title": "User Sign-In with Invalid Credentials",
+    "description": "Verify that the system prevents sign-in with invalid credentials and displays appropriate error messages.",
     "category": "error handling",
     "priority": "High",
     "steps": [
       {
         "type": "action",
-        "description": "Navigate to sign-in page"
+        "description": "Navigate to the sign-in page."
       },
       {
         "type": "action",
-        "description": "Input invalid email or wrong password"
+        "description": "Enter invalid email or password combinations."
       },
       {
         "type": "action",
-        "description": "Submit the sign-in form"
+        "description": "Attempt to submit the sign-in form."
       },
       {
         "type": "assertion",
-        "description": "Verify that login fails with error message"
+        "description": "Verify that sign-in fails and an error notification is shown."
       },
       {
         "type": "assertion",
-        "description": "Ensure user remains unauthenticated"
+        "description": "Ensure user remains on the sign-in page."
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Real-Time Streaming of AI Responses",
+    "description": "Validate that the AI Battle Mode streams responses from GPT-5-Nano, Grok-4, and DeepSeek v3.1 simultaneously with a visible typewriter effect and minimal latency.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Sign in and enter Battle Mode."
+      },
+      {
+        "type": "action",
+        "description": "Enter a chat prompt and submit it."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that all three AI responses begin streaming simultaneously side-by-side."
+      },
+      {
+        "type": "assertion",
+        "description": "Check that streaming text displays a typewriter effect."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm minimal latency between each AI response start."
       }
     ]
   },
   {
     "id": "TC005",
-    "title": "Access Battle Mode UI without authentication",
-    "description": "Verify unauthenticated users are redirected to sign-in when attempting to access the Battle Mode chat interface.",
-    "category": "security",
+    "title": "Multi-Turn Conversation Context Preservation",
+    "description": "Verify that conversation context is preserved across multiple turns allowing continuous dialogue with AI models.",
+    "category": "functional",
     "priority": "High",
     "steps": [
       {
         "type": "action",
-        "description": "Directly navigate to the Battle Mode chat interface URL while logged out"
+        "description": "Start a new chat and submit an initial prompt."
+      },
+      {
+        "type": "action",
+        "description": "Submit follow-up prompts continuing the dialogue."
       },
       {
         "type": "assertion",
-        "description": "Verify redirection to sign-in page"
+        "description": "Check that AI responses reflect context from previous turns."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm no loss of conversation history during interaction."
       }
     ]
   },
   {
     "id": "TC006",
-    "title": "Real-time side-by-side AI response streaming",
-    "description": "Validate that when a user submits a chat prompt, the three AI models (GPT-5-Nano, Grok-4, DeepSeek v3.1) respond simultaneously with streaming outputs and typewriter effect.",
+    "title": "Chat Input with Text, Image, and Document Attachments via Drag and Drop",
+    "description": "Test that the advanced chat input accepts and correctly processes text input, image uploads, and document attachments using both manual selection and drag-and-drop methods.",
     "category": "functional",
     "priority": "High",
     "steps": [
       {
         "type": "action",
-        "description": "Authenticate and navigate to Battle Mode chat interface"
+        "description": "Navigate to Battle Mode chat input."
       },
       {
         "type": "action",
-        "description": "Input a valid text prompt and submit"
+        "description": "Input text and submit a message."
       },
       {
         "type": "assertion",
-        "description": "Verify three AI response panels appear side by side"
+        "description": "Confirm text is accepted and processed correctly."
+      },
+      {
+        "type": "action",
+        "description": "Upload an image file via drag and drop."
       },
       {
         "type": "assertion",
-        "description": "Each panel streams response text progressively with typewriter animation"
+        "description": "Verify image is accepted, previewed, and sent with the message."
+      },
+      {
+        "type": "action",
+        "description": "Upload a document attachment via manual file selector."
       },
       {
         "type": "assertion",
-        "description": "Finalize AI outputs appear with minimal latency and consistent alignment"
+        "description": "Check document is accepted, previewed if applicable, and sent."
       }
     ]
   },
   {
     "id": "TC007",
-    "title": "Submit chat input with text and image attachments",
-    "description": "Check that the chat input accepts text plus image attachments via drag-and-drop and uploads properly, triggering AI responses.",
+    "title": "Fallback Vision Description for Non-Vision AI Models",
+    "description": "Ensure that for AI models without vision support, intelligent fallback text descriptions of images are provided for processing.",
     "category": "functional",
-    "priority": "High",
+    "priority": "Medium",
     "steps": [
       {
         "type": "action",
-        "description": "Navigate to authenticated Battle Mode chat"
-      },
-      {
-        "type": "action",
-        "description": "Type a valid prompt in the text input"
-      },
-      {
-        "type": "action",
-        "description": "Attach an image file by drag-and-drop or file browser"
-      },
-      {
-        "type": "action",
-        "description": "Submit the input"
+        "description": "Upload an image attachment with a prompt."
       },
       {
         "type": "assertion",
-        "description": "Verify the image is uploaded and displayed as attachment"
+        "description": "For models that lack vision input, verify fallback textual description is generated and included in the prompt."
       },
       {
         "type": "assertion",
-        "description": "Verify the AI responses incorporate the multimodal input and stream accordingly"
+        "description": "Check that AI responses are generated appropriately using the fallback description."
       }
     ]
   },
   {
     "id": "TC008",
-    "title": "Submit chat input with document attachment",
-    "description": "Validate chat input supports document attachment upload (PDF/DOC/XLS), uploads correctly, and AI models handle document content or provide fallback analysis.",
+    "title": "Chat History Storage and Retrieval with Supabase",
+    "description": "Validate that chat conversations are persistently stored in Supabase and can be retrieved accurately with user sessions.",
     "category": "functional",
     "priority": "High",
     "steps": [
       {
         "type": "action",
-        "description": "Navigate to authenticated Battle Mode chat"
+        "description": "Sign in and conduct multiple AI chat sessions."
       },
       {
         "type": "action",
-        "description": "Input prompt text"
-      },
-      {
-        "type": "action",
-        "description": "Attach a supported document file"
-      },
-      {
-        "type": "action",
-        "description": "Submit the chat message"
+        "description": "Navigate to profile page to view chat history."
       },
       {
         "type": "assertion",
-        "description": "Verify document attachment is uploaded and visible"
+        "description": "Verify all previous chats are listed with correct timestamps and metadata."
       },
       {
         "type": "assertion",
-        "description": "Verify AI responses acknowledge and process document content or fallback description"
+        "description": "Select a chat and confirm proper display of conversation content."
       }
     ]
   },
   {
     "id": "TC009",
-    "title": "Fallback vision handling for unsupported models",
-    "description": "Ensure that when AI models do not support vision input, fallback textual descriptions are used and responses generate without errors.",
+    "title": "Chat History Search, Filter, Pagination, and Bulk Delete",
+    "description": "Verify that users can search, filter, paginate through chat history and perform bulk deletion actions with consistent data state.",
     "category": "functional",
-    "priority": "Medium",
+    "priority": "High",
     "steps": [
       {
         "type": "action",
-        "description": "Attach an image to chat input and submit"
+        "description": "Navigate to profile page with populated chat history."
+      },
+      {
+        "type": "action",
+        "description": "Use the search bar to filter chats by keyword."
       },
       {
         "type": "assertion",
-        "description": "Verify that models lacking vision support present or receive fallback descriptions"
+        "description": "Confirm displayed chats match the search terms."
+      },
+      {
+        "type": "action",
+        "description": "Apply filters such as date range or AI model type."
       },
       {
         "type": "assertion",
-        "description": "Ensure no errors or crashes occur in AI responses"
+        "description": "Verify filtered chats update accordingly."
+      },
+      {
+        "type": "action",
+        "description": "Navigate through pages of chat history using pagination controls."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm pagination loads distinct sets of chats."
+      },
+      {
+        "type": "action",
+        "description": "Select multiple chats and perform bulk delete action."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify selected chats are removed and data consistency is maintained."
       }
     ]
   },
   {
     "id": "TC010",
-    "title": "Maintain conversation context across multi-turn dialogues",
-    "description": "Verify that AI models maintain conversation context correctly for multiple consecutive turns within the same chat session.",
+    "title": "Voting on AI Responses Upvote and Downvote",
+    "description": "Check that users can upvote and downvote AI model responses and that these votes are recorded and persist correctly.",
     "category": "functional",
-    "priority": "High",
+    "priority": "Medium",
     "steps": [
       {
         "type": "action",
-        "description": "Submit first prompt in Battle Mode"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify AI responses reference initial question"
+        "description": "Enter Battle Mode chat with AI responses displayed."
       },
       {
         "type": "action",
-        "description": "Submit follow-up prompt referring to previous answer"
+        "description": "Click upvote button on one AI model response."
       },
       {
         "type": "assertion",
-        "description": "Verify AI responses incorporate prior context to produce relevant answers"
+        "description": "Confirm that vote is registered and UI reflects upvote state."
+      },
+      {
+        "type": "action",
+        "description": "Click downvote button on a different AI response."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify downvote is recorded and visually marked."
+      },
+      {
+        "type": "action",
+        "description": "Refresh page and ensure votes persist."
       }
     ]
   },
   {
     "id": "TC011",
-    "title": "Vote up and vote down AI responses",
-    "description": "Validate users can upvote or downvote each AI model response and the vote state persists correctly.",
+    "title": "Share Battle Results on Social Media and Copy Link",
+    "description": "Validate that users can share AI battle results through social media platforms and copy shareable links to the clipboard successfully.",
     "category": "functional",
     "priority": "Medium",
     "steps": [
       {
         "type": "action",
-        "description": "Render AI responses side by side"
+        "description": "Complete a chat battle and open the share modal."
       },
       {
         "type": "action",
-        "description": "Click upvote button on an AI model response"
+        "description": "Click social media share buttons (e.g., Twitter, Facebook)."
       },
       {
         "type": "assertion",
-        "description": "Verify upvote count updates and button reflects selection"
+        "description": "Confirm social share dialog opens with correct content."
       },
       {
         "type": "action",
-        "description": "Click downvote button on another AI response"
+        "description": "Click 'Copy Link' button."
       },
       {
         "type": "assertion",
-        "description": "Verify downvote is registered correctly"
-      },
-      {
-        "type": "action",
-        "description": "Reload the page"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify votes persist and display accurately"
+        "description": "Verify link is copied to clipboard and toast notification confirms success."
       }
     ]
   },
   {
     "id": "TC012",
-    "title": "Share battle results on social media",
-    "description": "Ensure that social media sharing buttons open correct share dialogs with pre-filled battle result info and links.",
+    "title": "Keyboard Shortcuts Functionality",
+    "description": "Verify that configured keyboard shortcuts (submit, clear input, new chat) trigger the intended actions without conflicts or errors.",
     "category": "functional",
     "priority": "Medium",
     "steps": [
       {
         "type": "action",
-        "description": "Complete a battle conversation with AI responses"
+        "description": "Focus on chat input field."
       },
       {
         "type": "action",
-        "description": "Open share modal"
-      },
-      {
-        "type": "action",
-        "description": "Click social media share buttons (e.g., Twitter, Facebook)"
+        "description": "Press the submit shortcut key."
       },
       {
         "type": "assertion",
-        "description": "Verify respective platform share dialogs open with correct battle link and description"
+        "description": "Confirm message is submitted successfully."
+      },
+      {
+        "type": "action",
+        "description": "Press the clear input shortcut key."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify chat input is cleared."
+      },
+      {
+        "type": "action",
+        "description": "Press the new chat shortcut key."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm new chat session is initialized and input cleared."
       }
     ]
   },
   {
     "id": "TC013",
-    "title": "Copy battle result link to clipboard",
-    "description": "Check that copying link to clipboard button copies the accurate URL and toast notification confirms action.",
-    "category": "functional",
+    "title": "Toast Notifications for Success and Error Feedback",
+    "description": "Verify that toast notifications appear appropriately for user actions such as message submit success, upload errors, or vote submissions, and that they disappear after a timeout or on manual dismissal.",
+    "category": "ui",
     "priority": "Medium",
     "steps": [
       {
         "type": "action",
-        "description": "Complete AI battle session"
-      },
-      {
-        "type": "action",
-        "description": "Open share modal"
-      },
-      {
-        "type": "action",
-        "description": "Click 'Copy Link' button"
+        "description": "Perform an action such as submitting a chat message."
       },
       {
         "type": "assertion",
-        "description": "Verify clipboard contains valid battle URL"
+        "description": "Confirm a success toast notification appears."
+      },
+      {
+        "type": "action",
+        "description": "Trigger an error by uploading an unsupported file format."
       },
       {
         "type": "assertion",
-        "description": "Verify toast notification confirming successful copy appears"
+        "description": "Verify an error toast notification is shown."
+      },
+      {
+        "type": "action",
+        "description": "Wait for toast notification to disappear automatically or dismiss it manually."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm the toast notification is removed from view."
       }
     ]
   },
   {
     "id": "TC014",
-    "title": "Keyboard shortcut for submitting chat input",
-    "description": "Ensure keyboard shortcut (e.g., Enter or Ctrl+Enter) submits chat input correctly without errors.",
-    "category": "functional",
-    "priority": "High",
+    "title": "Animated Neon-Themed Background Rendering",
+    "description": "Confirm that the neon-themed animated gradient backgrounds render smoothly with no flickering or visual artifacts across supported devices and screen sizes.",
+    "category": "ui",
+    "priority": "Low",
     "steps": [
       {
         "type": "action",
-        "description": "Focus on chat input text area"
-      },
-      {
-        "type": "action",
-        "description": "Type a prompt"
-      },
-      {
-        "type": "action",
-        "description": "Press specified keyboard shortcut to submit"
+        "description": "Load landing page and Battle Mode interface on multiple device types."
       },
       {
         "type": "assertion",
-        "description": "Verify chat input is submitted and AI responses trigger"
+        "description": "Verify animated background gradients are visible and animated as expected."
+      },
+      {
+        "type": "assertion",
+        "description": "Check for performance issues such as frame drops or flickering."
       }
     ]
   },
   {
     "id": "TC015",
-    "title": "Keyboard shortcut to clear input",
-    "description": "Verify that the keyboard shortcut to clear chat input (e.g., Escape) clears the current input immediately.",
-    "category": "functional",
+    "title": "Loading Skeletons During Data Fetching",
+    "description": "Ensure loading skeleton components are displayed appropriately during chat history loading and AI response streaming to improve user experience.",
+    "category": "ui",
     "priority": "Medium",
     "steps": [
       {
         "type": "action",
-        "description": "Focus on chat input and type text"
-      },
-      {
-        "type": "action",
-        "description": "Press clear input keyboard shortcut"
+        "description": "Navigate to profile with large chat history and trigger data fetch."
       },
       {
         "type": "assertion",
-        "description": "Verify chat input is cleared instantly"
+        "description": "Confirm loading skeleton placeholders are shown until data loads."
+      },
+      {
+        "type": "action",
+        "description": "Submit a chat prompt and observe AI response streaming."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify loading skeleton or animation displays before streaming text begins."
       }
     ]
   },
   {
     "id": "TC016",
-    "title": "Keyboard shortcut to start new chat",
-    "description": "Validate that the new chat keyboard shortcut (e.g., Ctrl+N) resets the chat interface and clears conversation context.",
+    "title": "SEO Metadata and Sitemap Validation",
+    "description": "Verify that landing and static informational pages contain proper SEO metadata, Open Graph tags, sitemap is generated correctly, and robots.txt has expected rules.",
     "category": "functional",
-    "priority": "Medium",
+    "priority": "Low",
     "steps": [
       {
         "type": "action",
-        "description": "Have an active conversation with AI responses displayed"
+        "description": "Access landing page and inspect HTML head for SEO metadata."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm page title, description, keywords, and Open Graph image tags are present."
       },
       {
         "type": "action",
-        "description": "Press new chat keyboard shortcut"
+        "description": "Navigate to sitemap.xml."
       },
       {
         "type": "assertion",
-        "description": "Verify chat history clears and input area is reset"
+        "description": "Verify sitemap contains all accessible URLs."
+      },
+      {
+        "type": "action",
+        "description": "Access robots.txt."
       },
       {
         "type": "assertion",
-        "description": "Verify conversation context is reset for new session"
+        "description": "Confirm expected crawl rules are listed for search engines."
       }
     ]
   },
   {
     "id": "TC017",
-    "title": "Chat history retrieval and pagination",
-    "description": "Ensure authenticated user can view chat history with pagination controls to navigate through multiple pages of conversations.",
-    "category": "functional",
+    "title": "Protected Routes Access Restriction for Unauthenticated Users",
+    "description": "Validate that unauthenticated users attempting to access Battle Mode or Profile pages are redirected to sign-in page and cannot bypass authentication.",
+    "category": "security",
     "priority": "High",
     "steps": [
       {
         "type": "action",
-        "description": "Navigate to profile page after sign-in"
+        "description": "Open a new incognito browser window."
       },
       {
         "type": "action",
-        "description": "Scroll through chat history list"
-      },
-      {
-        "type": "action",
-        "description": "Use pagination controls to navigate to next and previous pages"
+        "description": "Attempt to navigate directly to Battle Mode chat URL."
       },
       {
         "type": "assertion",
-        "description": "Verify correct chat conversations load for each page"
+        "description": "Verify user is redirected to sign-in page."
+      },
+      {
+        "type": "action",
+        "description": "Attempt to access profile page directly."
+      },
+      {
+        "type": "assertion",
+        "description": "Ensure redirection to sign-in occurs without access."
       }
     ]
   },
   {
     "id": "TC018",
-    "title": "Search chat history",
-    "description": "Validate that the search input filters chat history accurately by keywords or metadata.",
-    "category": "functional",
-    "priority": "Medium",
+    "title": "Handling Network Failures During API Calls",
+    "description": "Test system behavior when key API calls to Supabase or AI services fail due to network issues, verifying graceful error handling and user feedback.",
+    "category": "error handling",
+    "priority": "High",
     "steps": [
       {
         "type": "action",
-        "description": "Navigate to chat history page"
+        "description": "Simulate network failure or API downtime during chat history fetch."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm appropriate error message or toast notification is shown."
       },
       {
         "type": "action",
-        "description": "Enter keyword(s) in search input"
+        "description": "Simulate failure during AI response streaming request."
       },
       {
         "type": "assertion",
-        "description": "Verify chat list updates to show only matching conversations"
-      },
-      {
-        "type": "assertion",
-        "description": "Clear search and verify full chat history reappears"
+        "description": "Verify failure is handled gracefully without app crash and user is informed."
       }
     ]
   },
   {
     "id": "TC019",
-    "title": "Filter chat history by date or tags",
-    "description": "Check that users can apply filters on chat history such as date range or conversation tags, and results update accordingly.",
+    "title": "Consistency of Keyboard Shortcut Behavior Across Browsers",
+    "description": "Verify that keyboard shortcuts perform consistently without conflicts or unexpected behavior across supported browsers (Chrome, Firefox, Edge, Safari).",
     "category": "functional",
     "priority": "Medium",
     "steps": [
       {
         "type": "action",
-        "description": "Navigate to chat history page"
-      },
-      {
-        "type": "action",
-        "description": "Apply a date range filter"
+        "description": "Test each keyboard shortcut in Chrome."
       },
       {
         "type": "assertion",
-        "description": "Verify conversations are filtered by selected date range"
+        "description": "Verify all shortcuts trigger intended actions."
       },
       {
         "type": "action",
-        "description": "Apply a tag filter"
+        "description": "Repeat shortcut testing on Firefox, Edge, and Safari."
       },
       {
         "type": "assertion",
-        "description": "Verify conversations update to match tag selection"
+        "description": "Confirm consistent shortcut behavior with no discrepancies."
       }
     ]
   },
   {
     "id": "TC020",
-    "title": "Delete single chat conversation",
-    "description": "Confirm that users can delete individual chat conversations and they are removed from history persistently.",
-    "category": "functional",
-    "priority": "High",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Select a chat conversation from history"
-      },
-      {
-        "type": "action",
-        "description": "Click delete option and confirm deletion"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify conversation is removed from UI and backend"
-      },
-      {
-        "type": "action",
-        "description": "Refresh history page"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify deleted conversation no longer appears"
-      }
-    ]
-  },
-  {
-    "id": "TC021",
-    "title": "Bulk delete multiple chat conversations",
-    "description": "Validate that users can select multiple chat conversations and delete them in a single batch operation.",
+    "title": "Bulk Select/Deselect and Consistent UI State in Chat History",
+    "description": "Validate that bulk selection checkboxes in chat history work correctly to select and deselect multiple conversations with accurate UI state updates.",
     "category": "functional",
     "priority": "Medium",
     "steps": [
       {
         "type": "action",
-        "description": "Select multiple conversations using checkboxes"
+        "description": "Navigate to chat history page with multiple conversation entries."
       },
       {
         "type": "action",
-        "description": "Click bulk delete button and confirm"
+        "description": "Use bulk select checkbox to select all conversations."
       },
       {
         "type": "assertion",
-        "description": "Verify all selected conversations are removed from UI and backend"
+        "description": "Verify all conversations show selected state."
       },
       {
         "type": "action",
-        "description": "Refresh history view"
+        "description": "Deselect individual conversations."
       },
       {
         "type": "assertion",
-        "description": "Ensure deleted conversations do not reappear"
-      }
-    ]
-  },
-  {
-    "id": "TC022",
-    "title": "Toast notification success and error handling",
-    "description": "Check that toast notifications appear for successful actions (e.g., message sent, votes registered) and error conditions (e.g., upload failure).",
-    "category": "functional",
-    "priority": "Medium",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Perform actions like submitting prompt, voting, deleting chat"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify success toasts appear with appropriate messages"
+        "description": "Confirm bulk select checkbox updates to indicate partial selection."
       },
       {
         "type": "action",
-        "description": "Simulate error scenarios, such as failed upload or network issue"
+        "description": "Use bulk deselect to clear all selections."
       },
       {
         "type": "assertion",
-        "description": "Verify error toast notifications appear with correct information"
-      }
-    ]
-  },
-  {
-    "id": "TC023",
-    "title": "Animated neon-themed background rendering",
-    "description": "Validate that the dynamic neon-themed animated gradient background loads smoothly and performs well across devices and browsers.",
-    "category": "ui",
-    "priority": "Low",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Load landing, chat, and profile pages on desktop and mobile devices"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify animated gradient background is visible and animates smoothly without performance issues"
-      }
-    ]
-  },
-  {
-    "id": "TC024",
-    "title": "Loading skeletons display during data fetch",
-    "description": "Verify that skeleton placeholders appear appropriately during loading states in chat responses and chat history data fetching.",
-    "category": "ui",
-    "priority": "Medium",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Trigger AI battle responses submission and observe response area"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify loading skeletons appear until actual data is fully streamed"
-      },
-      {
-        "type": "action",
-        "description": "Navigate to chat history with slow network simulation"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify skeletons show in chat history area while data loads"
-      }
-    ]
-  },
-  {
-    "id": "TC025",
-    "title": "SEO metadata and sitemap validation",
-    "description": "Ensure landing and static informational pages include correct SEO metadata tags, sitemap.xml is generated properly, and robots.txt disallows sensitive paths.",
-    "category": "functional",
-    "priority": "Low",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Load landing page and inspect page source"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify presence of metadata tags (title, description, Open Graph etc.)"
-      },
-      {
-        "type": "action",
-        "description": "Fetch sitemap.xml and check for correct URLs"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify robots.txt contents to ensure proper crawling instructions"
+        "description": "Verify all checkboxes are cleared and UI reflects this."
       }
     ]
   }

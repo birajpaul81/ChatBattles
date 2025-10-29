@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { a4fClient, AI_MODELS } from "@/lib/a4fClient";
+import { openRouterClient } from "@/lib/openRouterClient";
 
 export async function POST(req: Request) {
   try {
@@ -173,13 +174,26 @@ export async function POST(req: Request) {
 
           const temperature = 0.5;
 
+          // Check if this model has fallback configured
+          const hasFallback = modelInfo.fallbackId && modelInfo.fallbackProvider === 'openrouter';
+          const timeoutMs = hasFallback ? 30000 : 60000; // 30s for models with fallback, 60s otherwise
+
           try {
-            const completion = await a4fClient.chat.completions.create({
-              model: modelInfo.id,
-              messages: modelMessages,
-              temperature: temperature,
-              max_tokens: 500,
+            // Create a timeout promise
+            const timeoutPromise = new Promise((_, reject) => {
+              setTimeout(() => reject(new Error('TIMEOUT')), timeoutMs);
             });
+
+            // Race between API call and timeout
+            const completion = await Promise.race([
+              a4fClient.chat.completions.create({
+                model: modelInfo.id,
+                messages: modelMessages,
+                temperature: temperature,
+                max_tokens: 500,
+              }),
+              timeoutPromise
+            ]) as any;
 
             let responseText = completion.choices[0].message.content || "No response";
             
@@ -192,8 +206,48 @@ export async function POST(req: Request) {
               model: modelInfo.id,
               name: modelInfo.name,
               text: responseText,
+              usedFallback: false,
             };
           } catch (apiError: any) {
+            // Check if we should try fallback
+            if (hasFallback && (apiError.message === 'TIMEOUT' || apiError.status === 500 || apiError.code === 'ECONNABORTED' || apiError.code === 'ETIMEDOUT')) {
+              console.log(`${modelInfo.name}: Primary A4F failed/timed out, trying OpenRouter fallback...`);
+              
+              try {
+                // Convert messages to simple text format for OpenRouter
+                const fallbackMessages = modelMessages.map((msg: any) => {
+                  if (Array.isArray(msg.content)) {
+                    // Extract text parts only
+                    const textParts = msg.content.filter((part: any) => part.type === 'text');
+                    return {
+                      role: msg.role,
+                      content: textParts.map((p: any) => p.text).join('\n')
+                    };
+                  }
+                  return msg;
+                });
+
+                const fallbackCompletion = await openRouterClient.chat.completions.create({
+                  model: modelInfo.fallbackId!,
+                  messages: fallbackMessages,
+                  temperature: temperature,
+                  max_tokens: 500,
+                });
+
+                const responseText = fallbackCompletion.choices[0].message.content || "No response";
+
+                return {
+                  model: modelInfo.id,
+                  name: modelInfo.name,
+                  text: responseText,
+                  usedFallback: true,
+                };
+              } catch (fallbackError: any) {
+                console.error(`${modelInfo.name}: OpenRouter fallback also failed:`, fallbackError);
+                // If fallback fails, throw the original error
+                throw apiError;
+              }
+            }
             // If it's a vision model with images, try again without images
             if (modelInfo.supportsVision && hasImages && apiError.status === 500) {
               console.log(`${modelInfo.name}: Retrying without images due to API error`);

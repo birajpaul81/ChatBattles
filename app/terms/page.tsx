@@ -31,7 +31,7 @@ export default function TermsPage() {
                   1. Acceptance of Terms
                 </h2>
                 <p className="leading-relaxed">
-                  By accessing and using ChatBattles.ai (&quot;the Service&quot;), you
+                  By accessing and using ChatBattles AI (&quot;the Service&quot;), you
                   accept and agree to be bound by the terms and provision of
                   this agreement. If you do not agree to these terms, please do
                   not use the Service.
@@ -43,7 +43,7 @@ export default function TermsPage() {
                   2. Description of Service
                 </h2>
                 <p className="leading-relaxed mb-4">
-                  ChatBattles.ai provides a platform for users to interact with
+                  ChatBattles AI provides a platform for users to interact with
                   multiple AI models simultaneously and compare their responses.
                   The Service currently includes:
                 </p>
@@ -75,7 +75,7 @@ export default function TermsPage() {
                   4. Acceptable Use
                 </h2>
                 <p className="leading-relaxed mb-4">
-                  You may NOT use ChatBattles.ai to:
+                  You may NOT use ChatBattles AI to:
                 </p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>Generate harmful, abusive, or illegal content</li>
@@ -93,7 +93,7 @@ export default function TermsPage() {
                 </h2>
                 <p className="leading-relaxed">
                   The Service, including its original content, features, and
-                  functionality, is owned by ChatBattles.ai and is protected by
+                  functionality, is owned by ChatBattles AI and is protected by
                   international copyright, trademark, and other intellectual
                   property laws. AI-generated responses are provided as-is and
                   may be subject to the terms of the respective AI model
@@ -118,7 +118,7 @@ export default function TermsPage() {
                   7. Third-Party Services
                 </h2>
                 <p className="leading-relaxed mb-4">
-                  ChatBattles.ai integrates with third-party services including:
+                  ChatBattles AI integrates with third-party services including:
                 </p>
                 <ul className="list-disc list-inside space-y-2 ml-4">
                   <li>Clerk (Authentication)</li>
@@ -162,7 +162,7 @@ export default function TermsPage() {
                   10. Limitation of Liability
                 </h2>
                 <p className="leading-relaxed">
-                  ChatBattles.ai and its creators shall not be liable for any
+                  ChatBattles AI and its creators shall not be liable for any
                   indirect, incidental, special, consequential, or punitive
                   damages resulting from your use or inability to use the
                   Service.
@@ -204,7 +204,7 @@ export default function TermsPage() {
 
               <section className="bg-black/50 border border-accent/30 rounded-xl p-6">
                 <p className="text-white font-semibold">
-                  By using ChatBattles.ai, you acknowledge that you have read,
+                  By using ChatBattles AI, you acknowledge that you have read,
                   understood, and agree to be bound by these Terms of Service.
                 </p>
               </section>

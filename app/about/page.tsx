@@ -20,7 +20,7 @@ export default function AboutPage() {
             transition={{ duration: 0.5 }}
           >
             <h1 className="text-4xl sm:text-5xl font-orbitron font-black text-white mb-4">
-              About <span className="text-accent">ChatBattles.ai</span>
+              About <span className="text-accent">ChatBattles AI</span>
             </h1>
             <p className="text-softGray text-xl mb-12">
               Empowering users to compare and choose the best AI for their needs
@@ -37,7 +37,7 @@ export default function AboutPage() {
                   and perspectives, we asked ourselves: <span className="text-white font-semibold">Why choose just one?</span>
                 </p>
                 <p className="text-lg leading-relaxed">
-                  ChatBattles.ai was born from the belief that comparing AI
+                  ChatBattles AI was born from the belief that comparing AI
                   responses shouldn&apos;t be complicated. We make it simple,
                   visual, and free for everyone to see multiple AI perspectives
                   side-by-side in real-time.
@@ -150,7 +150,7 @@ export default function AboutPage() {
                     We thought: <span className="text-white font-semibold italic">&quot;There has to be a better way.&quot;</span>
                   </p>
                   <p>
-                    So we built ChatBattles.ai—a platform that brings multiple AI
+                    So we built ChatBattles AI—a platform that brings multiple AI
                     models into one arena, letting them battle for the best
                     response. The result? <span className="text-accent font-semibold">Better insights, faster decisions,
                     and a more complete understanding</span> of any topic.
@@ -202,7 +202,7 @@ export default function AboutPage() {
                   Built with Passion
                 </h2>
                 <p className="text-lg leading-relaxed mb-4">
-                  ChatBattles.ai was created by <span className="text-accent font-semibold">Biraj</span>, a developer
+                  ChatBattles AI was created by <span className="text-accent font-semibold">Biraj</span>, a developer
                   passionate about making AI technology more accessible and
                   useful for everyone.
                 </p>

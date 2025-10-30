@@ -36,7 +36,7 @@ export default function Navbar() {
           >
             <span className="text-2xl font-orbitron font-black text-white group-hover:text-accent transition-colors">
               ChatBattles
-              <span className="text-accent">.ai</span>
+              <span className="text-accent"> AI</span>
             </span>
           </Link>
 

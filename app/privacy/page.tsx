@@ -31,7 +31,7 @@ export default function PrivacyPage() {
                   1. Introduction
                 </h2>
                 <p className="leading-relaxed">
-                  ChatBattles.ai (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to
+                  ChatBattles AI (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to
                   protecting your privacy. This Privacy Policy explains how we
                   collect, use, disclose, and safeguard your information when you
                   use our Service.
@@ -257,7 +257,7 @@ export default function PrivacyPage() {
                   8. Children&apos;s Privacy
                 </h2>
                 <p className="leading-relaxed">
-                  ChatBattles.ai is not intended for users under 13 years of age.
+                  ChatBattles AI is not intended for users under 13 years of age.
                   We do not knowingly collect information from children. If you
                   believe we have collected information from a child, please
                   contact us immediately.

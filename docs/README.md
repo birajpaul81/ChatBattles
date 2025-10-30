@@ -1,8 +1,10 @@
-# ChatBattles.ai 🔥⚔️
+# ChatBattles AI 🔥⚔️
 
 A production-ready AI chat platform where users can compare responses from multiple AI models side-by-side in real-time "Battle Mode."
 
-![ChatBattles.ai](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)
+**Live at**: [https://www.chatbattles.site](https://www.chatbattles.site)
+
+![ChatBattles AI](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?style=for-the-badge&logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=for-the-badge&logo=tailwindcss)
 
@@ -213,7 +215,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 **Biraj**
 
-Made with ⚡ by ChatBattles.ai
+Made with ⚡ by ChatBattles AI
 
 ---
 

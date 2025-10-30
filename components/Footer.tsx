@@ -33,7 +33,7 @@ export default function Footer() {
             ))}
           </div>
           <p className="text-softGray text-sm">
-            © 2025 ChatBattles.ai — Made with{" "}
+            © 2025 ChatBattles AI — Made with{" "}
             <span className="text-accent">⚡</span> by{" "}
             <span className="text-accent font-semibold">Biraj</span>
           </p>

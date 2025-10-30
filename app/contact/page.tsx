@@ -19,16 +19,41 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitStatus("idle");
 
-    // Simulate form submission (replace with actual API call)
-    setTimeout(() => {
-      setSubmitStatus("success");
-      setIsSubmitting(false);
-      setFormData({ name: "", email: "", subject: "", message: "" });
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-      // Reset success message after 5 seconds
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitStatus("success");
+        setFormData({ name: "", email: "", subject: "", message: "" });
+
+        // Reset success message after 5 seconds
+        setTimeout(() => setSubmitStatus("idle"), 5000);
+      } else {
+        setSubmitStatus("error");
+        console.error("Form submission error:", data.error);
+
+        // Reset error message after 5 seconds
+        setTimeout(() => setSubmitStatus("idle"), 5000);
+      }
+    } catch (error) {
+      setSubmitStatus("error");
+      console.error("Network error:", error);
+
+      // Reset error message after 5 seconds
       setTimeout(() => setSubmitStatus("idle"), 5000);
-    }, 1500);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
@@ -80,6 +105,18 @@ export default function ContactPage() {
                   >
                     <p className="text-green-400 font-semibold">
                       ✅ Message sent successfully! We&apos;ll get back to you soon.
+                    </p>
+                  </motion.div>
+                )}
+
+                {submitStatus === "error" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mb-6 bg-red-500/10 border border-red-500/50 rounded-xl p-4"
+                  >
+                    <p className="text-red-400 font-semibold">
+                      ❌ Failed to send message. Please try again or email us directly.
                     </p>
                   </motion.div>
                 )}
@@ -218,10 +255,10 @@ export default function ContactPage() {
                           Email
                         </h3>
                         <a
-                          href="mailto:support@chatbattles.ai"
+                          href="mailto:chatbattlesai@gmail.com"
                           className="text-accent hover:underline"
                         >
-                          support@chatbattles.ai
+                          chatbattlesai@gmail.com
                         </a>
                         <p className="text-sm text-softGray mt-1">
                           We typically respond within 24 hours

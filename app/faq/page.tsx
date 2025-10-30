@@ -8,14 +8,14 @@ import AnimatedBackground from "@/components/AnimatedBackground";
 
 const faqs = [
   {
-    question: "What is ChatBattles.ai?",
+    question: "What is ChatBattles AI?",
     answer:
-      "ChatBattles.ai is a platform that lets you interact with multiple AI models simultaneously and compare their responses side-by-side. Currently, we support GPT-5, Llama-4, DeepSeek v3.1, and Google Gemini 2.5 Pro.",
+      "ChatBattles AI is a platform that lets you interact with multiple AI models simultaneously and compare their responses side-by-side. Currently, we support GPT-5, Llama-4, DeepSeek v3.1, and Google Gemini 2.5 Pro.",
   },
   {
-    question: "Is ChatBattles.ai really free?",
+    question: "Is ChatBattles AI really free?",
     answer:
-      "Yes! ChatBattles.ai is completely free to use. We believe in democratizing access to AI technology. There are no hidden fees, subscriptions, or paywalls.",
+      "Yes! ChatBattles AI is completely free to use. We believe in democratizing access to AI technology. There are no hidden fees, subscriptions, or paywalls.",
   },
   {
     question: "Which AI models do you support?",
@@ -40,17 +40,17 @@ const faqs = [
   {
     question: "Do I need to create an account?",
     answer:
-      "Yes, you need to sign up to use ChatBattles.ai. This allows us to save your chat history and provide a personalized experience. Sign-up is quick and free!",
+      "Yes, you need to sign up to use ChatBattles AI. This allows us to save your chat history and provide a personalized experience. Sign-up is quick and free!",
   },
   {
-    question: "Can I use ChatBattles.ai for commercial purposes?",
+    question: "Can I use ChatBattles AI for commercial purposes?",
     answer:
       "Yes, you can use the AI responses for commercial purposes, subject to the terms of service of the respective AI model providers (OpenAI, Meta, DeepSeek, Google). Please review our Terms of Service for details.",
   },
   {
-    question: "What can I use ChatBattles.ai for?",
+    question: "What can I use ChatBattles AI for?",
     answer:
-      "You can use ChatBattles.ai for anything! Get help with coding, writing, research, brainstorming, learning new topics, creative projects, and more. Compare different AI perspectives on any question.",
+      "You can use ChatBattles AI for anything! Get help with coding, writing, research, brainstorming, learning new topics, creative projects, and more. Compare different AI perspectives on any question.",
   },
   {
     question: "Are there any usage limits?",
@@ -85,7 +85,7 @@ const faqs = [
   {
     question: "Is there a mobile app?",
     answer:
-      "ChatBattles.ai is a web application that works great on mobile browsers! We don't have a native app yet, but our responsive design provides a smooth mobile experience.",
+      "ChatBattles AI is a web application that works great on mobile browsers! We don't have a native app yet, but our responsive design provides a smooth mobile experience.",
   },
   {
     question: "How can I report a bug or request a feature?",
@@ -93,7 +93,7 @@ const faqs = [
       "We'd love to hear from you! Visit our Contact page or reach out through our social media channels. Your feedback helps us improve!",
   },
   {
-    question: "Will ChatBattles.ai always be free?",
+    question: "Will ChatBattles AI always be free?",
     answer:
       "Our core features will always be free! We may introduce optional premium features in the future, but the fundamental AI battle experience will remain accessible to everyone.",
   },
@@ -162,7 +162,7 @@ export default function FAQPage() {
               Frequently Asked Questions
             </h1>
             <p className="text-softGray text-lg mb-12">
-              Everything you need to know about ChatBattles.ai
+              Everything you need to know about ChatBattles AI
             </p>
 
             <div className="space-y-4">

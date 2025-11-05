@@ -14,9 +14,11 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/", label: "Home" },
+    { href: "/blog", label: "Blog" },
     ...(isSignedIn
       ? [
-          { href: "/chat", label: "Chat" },
+          { href: "/chat", label: "Battle" },
+          { href: "/chat-mode", label: "Chat" },
           { href: "/profile", label: "Profile" },
         ]
       : []),

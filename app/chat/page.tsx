@@ -8,7 +8,6 @@ import Footer from "@/components/Footer";
 import ChatInput, { AttachedFile } from "@/components/ChatInput";
 import BattleCard from "@/components/BattleCard";
 import AnimatedBackground from "@/components/AnimatedBackground";
-import LoadingSkeleton from "@/components/LoadingSkeleton";
 import Toast from "@/components/Toast";
 import KeyboardShortcuts from "@/components/KeyboardShortcuts";
 import ShareModal from "@/components/ShareModal";
@@ -180,13 +179,13 @@ export default function ChatPage() {
     }
   }, [currentChatId, showToast]);
 
-  const handleClearConversation = () => {
+  const handleClearConversation = useCallback(() => {
     setConversationHistory([]);
     setBattleResults([]);
     setPrompt("");
     setError(null);
     showToast("Conversation cleared", "info");
-  };
+  }, [showToast]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -215,10 +214,10 @@ export default function ChatPage() {
   }, [conversationHistory, showKeyboardShortcuts, handleClearConversation]);
 
   const modelColors: Record<string, "orange" | "red" | "amber" | "blue"> = {
-    "provider-3/gpt-5-nano": "orange",
+    "openai/gpt-oss-120b": "orange",
     "provider-3/llama-4-scout": "red",
-    "provider-1/deepseek-v3.1": "amber",
-    "provider-3/gemini-2.5-flash-lite-preview-09-2025": "blue",
+    "deepseek/deepseek-chat-v3.1:free": "amber",
+    "gemini-2.5-flash-lite": "blue",
   };
 
   return (
@@ -350,10 +349,10 @@ export default function ChatPage() {
                   // Show individual thinking states for each model
                   Object.entries(modelColors).map(([modelId, color], index) => {
                     const modelNames: Record<string, string> = {
-                      'provider-3/gpt-5-nano': 'GPT-5',
+                      'openai/gpt-oss-120b': 'GPT-5',
                       'provider-3/llama-4-scout': 'Llama-4',
-                      'provider-1/deepseek-v3.1': 'DeepSeek v3.1',
-                      'provider-3/gemini-2.5-flash-lite-preview-09-2025': 'Google Gemini 2.5 Pro'
+                      'deepseek/deepseek-chat-v3.1:free': 'DeepSeek v3.1',
+                      'gemini-2.5-flash-lite': 'Google Gemini 2.5 Pro'
                     };
                     return (
                       <BattleCard

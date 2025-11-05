@@ -12,35 +12,35 @@
 
 @layer utilities {
   .glow-orange {
-    box-shadow: 0 0 20px rgba(253, 99, 22, 0.5), 0 0 40px rgba(253, 99, 22, 0.3);
+    box-shadow: 0 0 25px rgba(253, 99, 22, 0.6), 0 0 50px rgba(253, 99, 22, 0.4), 0 0 75px rgba(253, 99, 22, 0.2);
   }
   
   .glow-orange-strong {
-    box-shadow: 0 0 30px rgba(253, 99, 22, 0.8), 0 0 60px rgba(253, 99, 22, 0.5);
+    box-shadow: 0 0 35px rgba(253, 99, 22, 0.9), 0 0 70px rgba(253, 99, 22, 0.6), 0 0 100px rgba(253, 99, 22, 0.3);
   }
 
   .glow-red {
-    box-shadow: 0 0 20px rgba(239, 68, 68, 0.5), 0 0 40px rgba(239, 68, 68, 0.3);
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.6), 0 0 50px rgba(239, 68, 68, 0.4), 0 0 75px rgba(239, 68, 68, 0.2);
   }
 
   .glow-red-strong {
-    box-shadow: 0 0 30px rgba(239, 68, 68, 0.8), 0 0 60px rgba(239, 68, 68, 0.5);
+    box-shadow: 0 0 35px rgba(239, 68, 68, 0.9), 0 0 70px rgba(239, 68, 68, 0.6), 0 0 100px rgba(239, 68, 68, 0.3);
   }
 
   .glow-amber {
-    box-shadow: 0 0 20px rgba(245, 158, 11, 0.5), 0 0 40px rgba(245, 158, 11, 0.3);
+    box-shadow: 0 0 25px rgba(245, 158, 11, 0.6), 0 0 50px rgba(245, 158, 11, 0.4), 0 0 75px rgba(245, 158, 11, 0.2);
   }
 
   .glow-amber-strong {
-    box-shadow: 0 0 30px rgba(245, 158, 11, 0.8), 0 0 60px rgba(245, 158, 11, 0.5);
+    box-shadow: 0 0 35px rgba(245, 158, 11, 0.9), 0 0 70px rgba(245, 158, 11, 0.6), 0 0 100px rgba(245, 158, 11, 0.3);
   }
 
   .glow-blue {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5), 0 0 40px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 25px rgba(59, 130, 246, 0.6), 0 0 50px rgba(59, 130, 246, 0.4), 0 0 75px rgba(59, 130, 246, 0.2);
   }
 
   .glow-blue-strong {
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.8), 0 0 60px rgba(59, 130, 246, 0.5);
+    box-shadow: 0 0 35px rgba(59, 130, 246, 0.9), 0 0 70px rgba(59, 130, 246, 0.6), 0 0 100px rgba(59, 130, 246, 0.3);
   }
 
   .gradient-orange {
@@ -108,6 +108,14 @@
 
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(253, 99, 22, 0.8);
+  }
+
+  /* Enable text selection */
+  .select-text {
+    user-select: text !important;
+    -webkit-user-select: text !important;
+    -moz-user-select: text !important;
+    -ms-user-select: text !important;
   }
 }
 

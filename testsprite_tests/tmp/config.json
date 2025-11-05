@@ -1,8 +1,8 @@
 {
-  "status": "commited",
+  "status": "init",
   "type": "frontend",
   "scope": "codebase",
-  "localEndpoint": "http://localhost:3000",
+  "localEndpoint": "http://localhost:3000/",
   "loginUser": "palbiraj4@gmail.com",
   "loginPassword": "Bir@j9836926459",
   "executionArgs": {
@@ -14,5 +14,6 @@
       "API_KEY": "sk-user-wBlha5aHgBYRDwF8ryw-LkCTsYnlfpO5iyPnF5WuLnYJwwdjYrKxw2qP8zLxFE0LUppOcZwPUNZXybZeBSrv8l22nkaTJR90eL1VnI9NZmFJGLAVslG1HM3PgZiVa1IXQCc"
     }
   },
-  "proxy": "http://a8a5475a-9a93-49f5-b0e0-13ea8f0933f0:i7xqHDNVY9W4Y5hIGDiNlPL3KiTwUgHk@tun.testsprite.com:8080"
+  "proxy": "http://a8a5475a-9a93-49f5-b0e0-13ea8f0933f0:i7xqHDNVY9W4Y5hIGDiNlPL3KiTwUgHk@tun.testsprite.com:8080",
+  "serverPort": 54435
 }

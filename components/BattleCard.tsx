@@ -32,10 +32,10 @@ export default function BattleCard({
   const [userVote, setUserVote] = useState<"up" | "down" | null>(null);
 
   const colorClasses = {
-    orange: "border-accent hover:glow-orange-strong transition-shadow duration-300",
-    red: "border-red-500 hover:glow-red-strong transition-shadow duration-300",
-    amber: "border-amber-500 hover:glow-amber-strong transition-shadow duration-300",
-    blue: "border-blue-500 hover:glow-blue-strong transition-shadow duration-300",
+    orange: "border-accent glow-orange hover:glow-orange-strong transition-shadow duration-300",
+    red: "border-red-500 glow-red hover:glow-red-strong transition-shadow duration-300",
+    amber: "border-amber-500 glow-amber hover:glow-amber-strong transition-shadow duration-300",
+    blue: "border-blue-500 glow-blue hover:glow-blue-strong transition-shadow duration-300",
   };
 
   useEffect(() => {

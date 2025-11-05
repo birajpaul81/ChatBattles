@@ -15,12 +15,19 @@ export interface AIModel {
   name: string;
   color: string;
   supportsVision: boolean;
+  provider?: 'a4f' | 'google' | 'openrouter' | 'groq';
   fallbackId?: string;
-  fallbackProvider?: 'openrouter';
+  fallbackProvider?: 'openrouter' | 'google';
 }
 
 export const AI_MODELS: AIModel[] = [
-  { id: "provider-3/gpt-5-nano", name: "GPT-5", color: "orange", supportsVision: true },
+  { 
+    id: "openai/gpt-oss-120b", 
+    name: "GPT-5", 
+    color: "orange", 
+    supportsVision: false,
+    provider: "groq"
+  },
   { 
     id: "provider-3/llama-4-scout", 
     name: "Llama-4", 
@@ -30,13 +37,18 @@ export const AI_MODELS: AIModel[] = [
     fallbackProvider: "openrouter"
   },
   { 
-    id: "provider-1/deepseek-v3.1", 
+    id: "deepseek/deepseek-chat-v3.1:free", 
     name: "DeepSeek v3.1", 
     color: "amber", 
     supportsVision: false,
-    fallbackId: "deepseek/deepseek-chat-v3.1:free",
-    fallbackProvider: "openrouter"
+    provider: "openrouter"
   },
-  { id: "provider-3/gemini-2.5-flash-lite-preview-09-2025", name: "Google Gemini 2.5 Pro", color: "blue", supportsVision: true },
+  { 
+    id: "gemini-2.5-flash-lite", 
+    name: "Google Gemini 2.5 Pro", 
+    color: "blue", 
+    supportsVision: true,
+    provider: "google"
+  },
 ];
 
